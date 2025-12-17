@@ -692,4 +692,131 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get new_ep => 'New';
+
+  @override
+  String get not_provided => 'Not Provided';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get no_audio_track => 'No Audio Track';
+
+  @override
+  String get no_subtitle_track => 'No Subtitle Track';
+
+  @override
+  String get repository_not_available => 'Repository not available';
+
+  @override
+  String get no_favorites_yet => 'No favorites yet';
+
+  @override
+  String get series_not_found => 'Series not found';
+
+  @override
+  String get sort_a_to_z => 'A → Z';
+
+  @override
+  String get sort_z_to_a => 'Z → A';
+
+  @override
+  String get xtream_codes => 'Xtream Codes';
+
+  @override
+  String get m3u_playlist_type => 'M3U Playlist';
+
+  @override
+  String get xstream_playlist => 'XStream Playlist';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String error_message(Object message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get live_broadcast => 'Live';
+
+  @override
+  String get film => 'Movie';
+
+  @override
+  String get series => 'Series';
+
+  @override
+  String get continue_watching => 'Continue';
+
+  @override
+  String get films => 'Movies';
+
+  @override
+  String get series_list => 'Series';
+
+  @override
+  String get instructions_title => 'How to Add Playlist to IPTV Smart Player';
+
+  @override
+  String get instruction_step_1_title => 'Find M3U Playlist';
+
+  @override
+  String get instruction_step_1_subtitle =>
+      'Search online for a publicly available IPTV playlist (M3U)';
+
+  @override
+  String get instruction_step_2_title => 'Copy Link or Download';
+
+  @override
+  String get instruction_step_2_subtitle =>
+      'Copy the playlist link or download the .m3u file';
+
+  @override
+  String get instruction_step_3_title => 'Import Playlist in App';
+
+  @override
+  String get instruction_step_3_subtitle =>
+      'In the app: Add Playlist → Import URL → Paste Link';
+
+  @override
+  String get instruction_step_4_title => 'Start Watching';
+
+  @override
+  String get instruction_step_4_subtitle =>
+      'Open the playlist and enjoy your channels.';
+
+  @override
+  String get favorites_list_coming_soon => 'Favorites list will be added soon';
+
+  @override
+  String get default_m3u_playlist_name => 'M3U Playlist-1';
+
+  @override
+  String get default_xtream_code_playlist_name => 'Playlist-1';
+
+  @override
+  String get api_url_example_hint => 'http://example.com:8080';
+
+  @override
+  String get stream_id_label => 'Stream ID';
+
+  @override
+  String rating_accessibility_label(Object rating) {
+    return 'Rating $rating';
+  }
+
+  @override
+  String categories_load_error(Object error) {
+    return 'Categories could not be loaded: $error';
+  }
+
+  @override
+  String get premium_unlimited_playlists => 'Unlimited playlists';
+
+  @override
+  String get premium_password_protected => 'Playlists with password';
+
+  @override
+  String get premium_ad_free => 'Ad-free experience';
 }

@@ -1,13 +1,12 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/models/favorite.dart';
 import 'package:another_iptv_player/models/content_type.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/widgets/content_card.dart';
 import 'package:another_iptv_player/utils/navigate_by_content_type.dart';
-import 'package:another_iptv_player/utils/build_media_url.dart';
 import 'package:another_iptv_player/utils/get_playlist_type.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
-import 'package:another_iptv_player/services/app_state.dart';
 import 'package:another_iptv_player/models/live_stream.dart';
 import 'package:another_iptv_player/models/vod_streams.dart';
 import 'package:another_iptv_player/models/series.dart';
@@ -48,14 +47,12 @@ class FavoritesSection extends StatelessWidget {
             children: [
               Text(
                 context.loc.favorites,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: AppTypography.headline4,
               ),
               if (onSeeAllTap != null && favorites.length > 10)
                 TextButton(
                   onPressed: onSeeAllTap,
-                  child: Text(context.loc.see_all_favorites),
+                  child: Text(context.loc.see_all_favorites, style: AppTypography.buttonSmall),
                 ),
             ],
           ),
@@ -78,7 +75,9 @@ class FavoritesSection extends StatelessWidget {
   }
 
   Widget _buildFavoriteCard(BuildContext context, Favorite favorite) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
       width: cardWidth,
       height: cardHeight,
       margin: EdgeInsets.symmetric(horizontal: 4),
@@ -92,7 +91,7 @@ class FavoritesSection extends StatelessWidget {
                   width: cardWidth,
                   height: cardHeight,
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
@@ -113,20 +112,12 @@ class FavoritesSection extends StatelessWidget {
           ),
           if (onFavoriteRemove != null)
             Positioned(
-              top: 8,
-              right: 8,
-              child: GestureDetector(
+              top: 4,
+              right: 4,
+              child: _AnimatedDeleteButton(
                 onTap: () async {
                   onFavoriteRemove?.call(favorite);
                 },
-                child: Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(Icons.favorite, color: Colors.red, size: 16),
-                ),
               ),
             ),
         ],
@@ -222,5 +213,63 @@ class FavoritesSection extends StatelessWidget {
 
   void _navigateToContent(BuildContext context, ContentItem contentItem) {
     navigateByContentType(context, contentItem);
+  }
+}
+
+class _AnimatedDeleteButton extends StatefulWidget {
+  final VoidCallback onTap;
+
+  const _AnimatedDeleteButton({required this.onTap});
+
+  @override
+  State<_AnimatedDeleteButton> createState() => _AnimatedDeleteButtonState();
+}
+
+class _AnimatedDeleteButtonState extends State<_AnimatedDeleteButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.85).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTap() {
+    _controller.forward().then((_) {
+      _controller.reverse();
+      widget.onTap();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _handleTap,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.7),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(Icons.close, color: Colors.white, size: 18),
+        ),
+      ),
+    );
   }
 }

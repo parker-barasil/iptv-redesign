@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class WatchHistoryEmptyState extends StatelessWidget {
@@ -6,25 +7,25 @@ class WatchHistoryEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final subtleColor = Theme.of(context).colorScheme.onSurfaceVariant;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.history, size: 64, color: Colors.grey),
+          Icon(Icons.history, size: 64, color: subtleColor),
           const SizedBox(height: 16),
           Text(
             context.loc.history,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
+            style: AppTypography.headline3.copyWith(
+              color: subtleColor,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
           Text(
             context.loc.history_empty_message,
-            style: const TextStyle(fontSize: 14, color: Colors.grey),
+            style: AppTypography.body2Regular.copyWith(color: subtleColor),
             textAlign: TextAlign.center,
           ),
         ],

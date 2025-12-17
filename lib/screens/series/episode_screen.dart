@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/database/database.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
@@ -120,7 +121,7 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
   @override
   Widget build(BuildContext context) {
     if (!allContentsLoaded) {
-      return buildFullScreenLoadingWidget();
+      return buildFullScreenLoadingWidget(context);
     } else {
       return Scaffold(
         body: SafeArea(
@@ -152,21 +153,17 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
                                     Expanded(
                                       child: Text(
                                         contentItem.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                        style: AppTypography.headline4.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                     Text(
                                       context.loc.episode_count(
                                         allContents.length.toString(),
                                       ),
-                                      style: TextStyle(
+                                      style: AppTypography.body2Regular.copyWith(
                                         color: AppPalette.neutral600Of(context),
-                                        fontSize: 14,
                                       ),
                                     ),
                                   ],
@@ -263,10 +260,8 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
                       return Center(
                         child: Text(
                           '${episode.episodeNum}',
-                          style: TextStyle(
+                          style: AppTypography.body1SemiBold.copyWith(
                             color: AppColors.primary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
                           ),
                         ),
                       );
@@ -276,10 +271,8 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
                     : Center(
                   child: Text(
                     '${episode.episodeNum}',
-                    style: TextStyle(
+                    style: AppTypography.body1SemiBold.copyWith(
                       color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -297,10 +290,7 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
                             episode.title,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
+                            style: AppTypography.body2SemiBold,
                           ),
                         ),
                         if (isRecent)
@@ -316,10 +306,9 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
                             ),
                             child:  Text(
                               context.loc.new_ep,
-                              style: TextStyle(
+                              style: AppTypography.body3SemiBold.copyWith(
                                 color: AppColors.white,
                                 fontSize: 10,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -332,8 +321,7 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
                       const SizedBox(height: 4),
                       Text(
                         context.loc.duration(episode.duration!),
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: AppTypography.body3Regular.copyWith(
                           color: AppPalette.neutral600Of(context),
                         ),
                       ),
@@ -346,8 +334,7 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
                         episode.plot!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: AppTypography.body3Regular.copyWith(
                           color: AppPalette.neutral600Of(context),
                         ),
                       ),
@@ -377,9 +364,8 @@ class _EpisodeScreenState extends State<EpisodeScreen> {
                           const SizedBox(width: 2),
                           Text(
                             episode.rating!.toStringAsFixed(1),
-                            style: TextStyle(
+                            style: AppTypography.body3SemiBold.copyWith(
                               fontSize: 10,
-                              fontWeight: FontWeight.w600,
                               color: AppColors.infoYellow,
                             ),
                           ),

@@ -9,6 +9,7 @@ import '../widgets/watch_history/watch_history_content.dart';
 import '../widgets/watch_history/watch_history_dialogs.dart';
 import '../widgets/watch_history/watch_history_list_screen.dart';
 import '../l10n/localization_extension.dart';
+import '../utils/toast_utils.dart';
 
 class WatchHistoryScreen extends StatefulWidget {
   final String playlistId;
@@ -40,13 +41,10 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
   }
 
   void _refreshData() {
-    print('WatchHistoryScreen: _refreshData çağrıldı - Key: ${widget.screenKey}');
+    // Removed debug prints
     if (mounted) {
-      print('WatchHistoryScreen: Veriler yenileniyor...');
       _historyController.loadWatchHistory();
       _favoritesController.loadFavorites();
-    } else {
-      print('WatchHistoryScreen: Widget mounted değil');
     }
   }
 
@@ -73,9 +71,9 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
 
             if (historyController.errorMessage != null) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(historyController.errorMessage!)),
-                );
+                if (mounted) {
+                  ToastUtils.showError(context, historyController.errorMessage!);
+                }
               });
             }
 
@@ -130,18 +128,11 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
     );
     
     if (success && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.loc.removed_from_favorites),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      ToastUtils.showSuccess(context, context.loc.removed_from_favorites);
     }
   }
 
   void _showAllFavorites() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Favoriler listesi yakında eklenecek')),
-    );
+    ToastUtils.showInfo(context, context.loc.favorites_list_coming_soon);
   }
 }

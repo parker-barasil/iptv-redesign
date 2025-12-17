@@ -49,12 +49,21 @@ class WatchHistoryController extends ChangeNotifier {
       _movieHistory.isEmpty &&
       _seriesHistory.isEmpty;
 
+  List<WatchHistory> get allHistory {
+    final combined = <WatchHistory>[
+      ..._liveHistory,
+      ..._movieHistory,
+      ..._seriesHistory,
+    ];
+    combined.sort((a, b) => b.lastWatched.compareTo(a.lastWatched));
+    return combined;
+  }
+
   Future<void> loadWatchHistory() async {
-    print('WatchHistoryController: loadWatchHistory başladı');
     _setLoading(true);
     _clearError();
 
-    // Mevcut verileri temizle
+    // Clear current data
     _continueWatching.clear();
     _recentlyWatched.clear();
     _liveHistory.clear();
@@ -63,14 +72,12 @@ class WatchHistoryController extends ChangeNotifier {
     notifyListeners();
 
     if (AppState.currentPlaylist == null) {
-      print('WatchHistoryController: Aktif playlist bulunamadı');
-      _setError('Aktif playlist bulunamadı');
+      _setError('Active playlist not found');
       _setLoading(false);
       return;
     }
 
     final playlistId = AppState.currentPlaylist!.id;
-    print('WatchHistoryController: Playlist ID: $playlistId');
 
     try {
       final futures = await Future.wait([
@@ -98,7 +105,7 @@ class WatchHistoryController extends ChangeNotifier {
 
       _setLoading(false);
     } catch (e) {
-      _setError('İzleme geçmişi yüklenirken hata oluştu: $e');
+      _setError('Error loading watch history: $e');
       _setLoading(false);
     }
   }
@@ -117,7 +124,7 @@ class WatchHistoryController extends ChangeNotifier {
           break;
       }
     } catch (e) {
-      _setError('Video oynatılırken hata oluştu: $e');
+      _setError('Error playing video: $e');
     }
   }
 
@@ -129,7 +136,7 @@ class WatchHistoryController extends ChangeNotifier {
       );
       await loadWatchHistory();
     } catch (e) {
-      _setError('Hata oluştu: $e');
+      _setError('Error occurred: $e');
     }
   }
 
@@ -138,7 +145,7 @@ class WatchHistoryController extends ChangeNotifier {
       await _historyService.clearAllHistory();
       await loadWatchHistory();
     } catch (e) {
-      _setError('Hata oluştu: $e');
+      _setError('Error occurred: $e');
     }
   }
 

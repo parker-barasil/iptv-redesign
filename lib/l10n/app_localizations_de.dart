@@ -699,4 +699,134 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get new_ep => 'Neu';
+
+  @override
+  String get not_provided => 'Nicht angegeben';
+
+  @override
+  String get unknown => 'Unbekannt';
+
+  @override
+  String get no_audio_track => 'Keine Audiospur';
+
+  @override
+  String get no_subtitle_track => 'Keine Untertitelspur';
+
+  @override
+  String get repository_not_available => 'Repository nicht verfügbar';
+
+  @override
+  String get no_favorites_yet => 'Noch keine Favoriten';
+
+  @override
+  String get series_not_found => 'Serie nicht gefunden';
+
+  @override
+  String get sort_a_to_z => 'A → Z';
+
+  @override
+  String get sort_z_to_a => 'Z → A';
+
+  @override
+  String get xtream_codes => 'Xtream Codes';
+
+  @override
+  String get m3u_playlist_type => 'M3U-Wiedergabeliste';
+
+  @override
+  String get xstream_playlist => 'XStream-Wiedergabeliste';
+
+  @override
+  String get loading => 'Laden...';
+
+  @override
+  String error_message(Object message) {
+    return 'Fehler: $message';
+  }
+
+  @override
+  String get live_broadcast => 'Live';
+
+  @override
+  String get film => 'Film';
+
+  @override
+  String get series => 'Serie';
+
+  @override
+  String get continue_watching => 'Fortsetzen';
+
+  @override
+  String get films => 'Filme';
+
+  @override
+  String get series_list => 'Serien';
+
+  @override
+  String get instructions_title =>
+      'So fügen Sie eine Wiedergabeliste zu IPTV Smart Player hinzu';
+
+  @override
+  String get instruction_step_1_title => 'M3U-Wiedergabeliste finden';
+
+  @override
+  String get instruction_step_1_subtitle =>
+      'Suchen Sie online nach einer öffentlich verfügbaren IPTV-Wiedergabeliste (M3U)';
+
+  @override
+  String get instruction_step_2_title => 'Link kopieren oder herunterladen';
+
+  @override
+  String get instruction_step_2_subtitle =>
+      'Kopieren Sie den Wiedergabelisten-Link oder laden Sie die .m3u-Datei herunter';
+
+  @override
+  String get instruction_step_3_title => 'Wiedergabeliste in App importieren';
+
+  @override
+  String get instruction_step_3_subtitle =>
+      'In der App: Wiedergabeliste hinzufügen → URL importieren → Link einfügen';
+
+  @override
+  String get instruction_step_4_title => 'Ansehen beginnen';
+
+  @override
+  String get instruction_step_4_subtitle =>
+      'Öffnen Sie die Wiedergabeliste und genießen Sie Ihre Kanäle.';
+
+  @override
+  String get favorites_list_coming_soon =>
+      'Favoritenliste wird bald hinzugefügt';
+
+  @override
+  String get default_m3u_playlist_name => 'M3U-Wiedergabeliste-1';
+
+  @override
+  String get default_xtream_code_playlist_name => 'Wiedergabeliste-1';
+
+  @override
+  String get api_url_example_hint => 'http://example.com:8080';
+
+  @override
+  String get stream_id_label => 'Stream-ID';
+
+  @override
+  String rating_accessibility_label(Object rating) {
+    return 'Bewertung $rating';
+  }
+
+  @override
+  String categories_load_error(Object error) {
+    return 'Kategorien konnten nicht geladen werden: $error';
+  }
+
+  @override
+  String get premium_unlimited_playlists => 'Unbegrenzte Wiedergabelisten';
+
+  @override
+  String get premium_password_protected =>
+      'Passwortgeschützte Wiedergabelisten';
+
+  @override
+  String get premium_ad_free => 'Werbefreies Erlebnis';
 }

@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/models/content_type.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
@@ -178,7 +179,7 @@ class SearchScreenState extends State<SearchScreen> {
               )
             : SelectableText(
                 _getScreenTitle(context),
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: AppTypography.headline4,
               ),
         actions: [
           if (isSearching)
@@ -270,7 +271,7 @@ class SearchScreenState extends State<SearchScreen> {
           SizedBox(height: 16),
           Text(
             _getEmptyStateMessage(),
-            style: TextStyle(fontSize: 16, color: AppColors.neutral600),
+            style: AppTypography.body1Regular.copyWith(color: AppColors.neutral600),
             textAlign: TextAlign.center,
           ),
         ],
@@ -296,7 +297,7 @@ class SearchScreenState extends State<SearchScreen> {
       case ContentType.vod:
         return context.loc.movie_not_found;
       case ContentType.series:
-        return 'Dizi bulunamadı'; // Bu için localization key'ine ihtiyaç var
+        return context.loc.series_not_found;
     }
   }
 
@@ -309,7 +310,7 @@ class SearchScreenState extends State<SearchScreen> {
           const SizedBox(height: 16),
           Text(
             '${context.loc.error_occurred}: $errorMessage',
-            style: TextStyle(fontSize: 16, color: AppColors.errorPink),
+            style: AppTypography.body1Regular.copyWith(color: AppColors.errorPink),
             textAlign: TextAlign.center,
           ),
         ],

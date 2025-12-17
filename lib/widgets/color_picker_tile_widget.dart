@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/core/style/app_colors.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
 
@@ -23,7 +24,7 @@ class ColorPickerTileWidget extends StatelessWidget {
       leading: Icon(icon, size: 20),
       title: Text(
         title,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        style: AppTypography.body2Medium,
       ),
       trailing: GestureDetector(
         onTap: () => _showColorPickerDialog(context),

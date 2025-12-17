@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/utils/get_playlist_type.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
@@ -7,6 +8,7 @@ import '../../../controllers/favorites_controller.dart';
 import '../../../models/favorite.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../widgets/player_widget.dart';
+import '../../utils/toast_utils.dart';
 
 class MovieScreen extends StatefulWidget {
   final ContentItem contentItem;
@@ -53,12 +55,9 @@ class _MovieScreenState extends State<MovieScreen> {
         _isFavorite = result;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
-          ),
-        ),
+      ToastUtils.showSuccess(
+        context,
+        result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
       );
     }
   }
@@ -83,8 +82,7 @@ class _MovieScreenState extends State<MovieScreen> {
                           Expanded(
                             child: Text(
                               widget.contentItem.name,
-                              style: Theme.of(context).textTheme.headlineSmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: AppTypography.headline3,
                             ),
                           ),
                           IconButton(
@@ -127,10 +125,8 @@ class _MovieScreenState extends State<MovieScreen> {
                               ),
                               child: Text(
                                 '${widget.contentItem.vodStream!.rating5based.toStringAsFixed(1) ?? '0.0'}/5',
-                                style: TextStyle(
+                                style: AppTypography.body2SemiBold.copyWith(
                                   color: AppColors.infoYellow,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
                                 ),
                               ),
                             ),
@@ -144,7 +140,7 @@ class _MovieScreenState extends State<MovieScreen> {
                       _buildDetailCard(
                         icon: Icons.calendar_today,
                         title: context.loc.creation_date,
-                        value: _formatDate('1746225795'),
+                        value: _formatDate('1746225795', context),
                       ),
                       const SizedBox(height: 12),
 
@@ -159,7 +155,7 @@ class _MovieScreenState extends State<MovieScreen> {
 
                       _buildDetailCard(
                         icon: Icons.tag,
-                        title: 'Stream ID',
+                        title: context.loc.stream_id_label,
                         value: widget.contentItem.id.toString(),
                       ),
                       const SizedBox(height: 12),
@@ -170,7 +166,7 @@ class _MovieScreenState extends State<MovieScreen> {
                         value:
                             widget.contentItem.containerExtension
                                 ?.toUpperCase() ??
-                            'Bilinmiyor',
+                            context.loc.unknown,
                       ),
                       const SizedBox(height: 12),
                     ],
@@ -213,19 +209,14 @@ class _MovieScreenState extends State<MovieScreen> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: AppTypography.body3Medium.copyWith(
                     color: AppColors.neutral600,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTypography.body1SemiBold,
                 ),
               ],
             ),
@@ -235,15 +226,15 @@ class _MovieScreenState extends State<MovieScreen> {
     );
   }
 
-  String _formatDate(String? timestamp) {
-    if (timestamp == null) return 'Bilinmiyor';
+  String _formatDate(String? timestamp, BuildContext context) {
+    if (timestamp == null) return context.loc.unknown;
     try {
       DateTime date = DateTime.fromMillisecondsSinceEpoch(
         int.parse(timestamp) * 1000,
       );
       return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
     } catch (e) {
-      return 'Bilinmiyor';
+      return context.loc.unknown;
     }
   }
 
@@ -267,9 +258,9 @@ class _MovieScreenState extends State<MovieScreen> {
         try {
           await launchUrl(url, mode: LaunchMode.externalApplication);
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(context.loc.error_occurred_title)),
-          );
+          if (mounted) {
+            ToastUtils.showError(context, context.loc.error_occurred_title);
+          }
         }
       },
       child: Container(
@@ -292,10 +283,7 @@ class _MovieScreenState extends State<MovieScreen> {
             const SizedBox(width: 16),
              Text(
               context.loc.trailer,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTypography.body1SemiBold,
             ),
             const Spacer(),
             Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppColors.neutral600),

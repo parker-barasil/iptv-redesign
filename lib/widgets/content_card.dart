@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
@@ -24,7 +25,8 @@ class ContentCard extends StatefulWidget {
   State<ContentCard> createState() => _ContentCardState();
 }
 
-class _ContentCardState extends State<ContentCard> with SingleTickerProviderStateMixin {
+class _ContentCardState extends State<ContentCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   bool _isHovered = false;
@@ -79,132 +81,126 @@ class _ContentCardState extends State<ContentCard> with SingleTickerProviderStat
       isRecent = diff <= 15;
     }
 
-    final bool isLiveStream = widget.content.contentType == ContentType.liveStream;
-    final Widget? ratingBadge = isLiveStream ? null : _buildRatingBadge(context);
+    final bool isLiveStream =
+        widget.content.contentType == ContentType.liveStream;
+    final Widget? ratingBadge = isLiveStream
+        ? null
+        : _buildRatingBadge(context);
 
-    return ScaleTransition(
-      scale: _scaleAnimation,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        margin: EdgeInsets.zero,
-        elevation: _isHovered ? AppSpacing.elevationMd : AppSpacing.elevationSm,
-        shadowColor: AppColors.primary.withValues(alpha: 0.3),
-        shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
-          side: widget.isSelected
-              ? BorderSide(color: AppColors.primary, width: 2)
-              : BorderSide.none,
-        ),
-        color: widget.isSelected
-            ? AppPalette.primaryLightOf(context)
-            : Theme.of(context).colorScheme.surface,
-        child: InkWell(
-          onTap: widget.onTap,
-          onHover: _onHoverChanged,
-          borderRadius: AppSpacing.borderRadiusLg,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: widget.content.imagePath.isNotEmpty
-                          ? CachedNetworkImage(
-                              imageUrl: widget.content.imagePath,
-                              fit: _getFitForContentType(),
-                              placeholder: (context, url) => Container(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
-                                child: const Center(
-                                  child: SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  _buildTitleCard(context),
-                            )
-                          : _buildTitleCard(context),
-                    ),
-                    if (ratingBadge != null) ratingBadge,
-                    if (isRecent)
-                      Positioned(
-                        top: 4,
-                        left: 4,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                AppColors.successGreen,
-                                AppColors.successIRNew,
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(6),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.successGreen.withValues(alpha: 0.4),
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Text(
-                            context.loc.new_ep,
-                            style: const TextStyle(
-                              color: AppColors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
+    return SizedBox(
+      width: widget.width,
+      height: widget.width * 0.5,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          margin: EdgeInsets.zero,
+          elevation: _isHovered
+              ? AppSpacing.elevationMd
+              : AppSpacing.elevationSm,
+          shadowColor: AppColors.primary.withValues(alpha: 0.3),
+          shape: RoundedRectangleBorder(
+            borderRadius: AppSpacing.borderRadiusXxl,
+            side: widget.isSelected
+                ? BorderSide(color: AppColors.primary, width: 4)
+                : BorderSide.none,
+          ),
+          color: widget.isSelected
+              ? AppPalette.primaryLightOf(context)
+              : Theme.of(context).colorScheme.surface,
+          child: InkWell(
+            onTap: widget.onTap,
+            onHover: _onHoverChanged,
+            borderRadius: AppSpacing.borderRadiusXxl,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                widget.content.imagePath.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: widget.content.imagePath,
+                        fit: _getFitForContentType(),
+                        placeholder: (context, url) => Container(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
+                          child: const Center(
+                            child: SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
                             ),
                           ),
                         ),
+                        errorWidget: (context, url, error) =>
+                            _buildTitleCard(context),
+                      )
+                    : _buildTitleCard(context),
+                if (ratingBadge != null) ratingBadge,
+                if (isRecent)
+                  Positioned(
+                    top: 4,
+                    left: 4,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
                       ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 6,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.successGreen,
+                            AppColors.successIRNew,
+                          ],
                         ),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withValues(alpha: 0.85),
-                            ],
+
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.successGreen.withValues(
+                              alpha: 0.4,
+                            ),
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
                           ),
-                        ),
-                        child: Text(
-                          widget.content.name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                            color: AppColors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                        ],
+                      ),
+                      child: Text(
+                        context.loc.new_ep,
+                        style: AppTypography.headline3.copyWith(
+                          fontSize: 20,
+                          color: AppColors.white,
                         ),
                       ),
                     ),
-                  ],
+                  ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.bottomCenter,
+                        colors: AppColors.accentGradientList,
+                      ),
+                    ),
+                    child: Text(
+                      widget.content.name,
+                      style: AppTypography.body3SemiBold.copyWith(
+                        color: AppColors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -240,8 +236,7 @@ class _ContentCardState extends State<ContentCard> with SingleTickerProviderStat
           padding: const EdgeInsets.all(8),
           child: Text(
             widget.content.name,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            style: AppTypography.body3SemiBold.copyWith(
               fontSize: 11,
               color: widget.isSelected
                   ? AppColors.primary
@@ -274,7 +269,7 @@ class _ContentCardState extends State<ContentCard> with SingleTickerProviderStat
       top: 6,
       right: 6,
       child: Semantics(
-        label: 'Rating $formattedRating',
+        label: context.loc.rating_accessibility_label(formattedRating),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
@@ -286,7 +281,7 @@ class _ContentCardState extends State<ContentCard> with SingleTickerProviderStat
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: AppSpacing.borderRadiusXxl,
             border: Border.all(
               color: AppColors.white.withValues(alpha: 0.2),
               width: 1,
@@ -302,16 +297,11 @@ class _ContentCardState extends State<ContentCard> with SingleTickerProviderStat
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.star_rounded,
-                size: 14,
-                color: AppColors.brown,
-              ),
+              Icon(Icons.star_rounded, size: 14, color: AppColors.brown),
               const SizedBox(width: 3),
               Text(
                 formattedRating,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: AppTypography.body3SemiBold.copyWith(
                   fontSize: 11.5,
                   color: AppColors.brown,
                   letterSpacing: 0.1,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 
 class DropdownTileWidget<T> extends StatelessWidget {
   final IconData icon;
@@ -23,7 +24,7 @@ class DropdownTileWidget<T> extends StatelessWidget {
       leading: Icon(icon, size: 20),
       title: Text(
         label,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        style: AppTypography.body2Medium,
       ),
       trailing: SizedBox(
         width: 120,
@@ -58,7 +59,7 @@ class DropdownTileWidget<T> extends StatelessWidget {
           items: items,
           onChanged: onChanged,
           isExpanded: true,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12),
+          style: AppTypography.body3Regular,
           dropdownColor: Theme.of(context).colorScheme.surface,
           icon: Icon(Icons.keyboard_arrow_down, size: 18),
         ),

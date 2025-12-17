@@ -3,6 +3,7 @@ import 'package:another_iptv_player/models/api_response.dart';
 import 'package:another_iptv_player/models/playlist_model.dart';
 import 'package:another_iptv_player/services/app_state.dart';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import '../../widgets/playlist_info_widget.dart';
 import '../../widgets/server_info_widget.dart';
 import '../../widgets/status_card_widget.dart';
@@ -45,7 +46,7 @@ class _N3uPlaylistSettingsScreenState extends State<M3uPlaylistSettingsScreen> {
       appBar: AppBar(
         title: SelectableText(
           context.loc.settings,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: AppTypography.body1SemiBold,
         ),
         actions: [],
       ),

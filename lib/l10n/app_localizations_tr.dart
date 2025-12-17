@@ -691,4 +691,134 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get new_ep => 'Yeni';
+
+  @override
+  String get not_provided => 'Not Provided';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get no_audio_track => 'Ses Parçası Yok';
+
+  @override
+  String get no_subtitle_track => 'Altyazı Yok';
+
+  @override
+  String get repository_not_available => 'Depo mevcut değil';
+
+  @override
+  String get no_favorites_yet => 'Henüz favori yok';
+
+  @override
+  String get series_not_found => 'Dizi bulunamadı';
+
+  @override
+  String get sort_a_to_z => 'A → Z';
+
+  @override
+  String get sort_z_to_a => 'Z → A';
+
+  @override
+  String get xtream_codes => 'Xtream Codes';
+
+  @override
+  String get m3u_playlist_type => 'M3U Oynatma Listesi';
+
+  @override
+  String get xstream_playlist => 'XStream Oynatma Listesi';
+
+  @override
+  String get loading => 'Yükleniyor...';
+
+  @override
+  String error_message(Object message) {
+    return 'Hata: $message';
+  }
+
+  @override
+  String get live_broadcast => 'Canlı Yayın';
+
+  @override
+  String get film => 'Film';
+
+  @override
+  String get series => 'Dizi';
+
+  @override
+  String get continue_watching => 'Devam Et';
+
+  @override
+  String get films => 'Filmler';
+
+  @override
+  String get series_list => 'Diziler';
+
+  @override
+  String get instructions_title =>
+      'IPTV Smart Player\'a Oynatma Listesi Nasıl Eklenir';
+
+  @override
+  String get instruction_step_1_title => 'M3U Oynatma Listesi Bulun';
+
+  @override
+  String get instruction_step_1_subtitle =>
+      'İnternette herkesin erişebileceği bir IPTV oynatma listesi (M3U) arayın';
+
+  @override
+  String get instruction_step_2_title => 'Bağlantıyı Kopyalayın veya İndirin';
+
+  @override
+  String get instruction_step_2_subtitle =>
+      'Oynatma listesi bağlantısını kopyalayın veya .m3u dosyasını indirin';
+
+  @override
+  String get instruction_step_3_title =>
+      'Uygulamada Oynatma Listesini İçe Aktarın';
+
+  @override
+  String get instruction_step_3_subtitle =>
+      'Uygulamada: Oynatma Listesi Ekle → URL İçe Aktar → Bağlantıyı Yapıştır';
+
+  @override
+  String get instruction_step_4_title => 'İzlemeye Başlayın';
+
+  @override
+  String get instruction_step_4_subtitle =>
+      'Oynatma listesini açın ve kanallarınızın keyfini çıkarın.';
+
+  @override
+  String get favorites_list_coming_soon =>
+      'Favoriler listesi yakında eklenecek';
+
+  @override
+  String get default_m3u_playlist_name => 'M3U Oynatma Listesi-1';
+
+  @override
+  String get default_xtream_code_playlist_name => 'Oynatma Listesi-1';
+
+  @override
+  String get api_url_example_hint => 'http://example.com:8080';
+
+  @override
+  String get stream_id_label => 'Yayın Kimliği';
+
+  @override
+  String rating_accessibility_label(Object rating) {
+    return 'Puan $rating';
+  }
+
+  @override
+  String categories_load_error(Object error) {
+    return 'Kategoriler yüklenemedi: $error';
+  }
+
+  @override
+  String get premium_unlimited_playlists => 'Sınırsız çalma listeleri';
+
+  @override
+  String get premium_password_protected => 'Şifre korumalı listeler';
+
+  @override
+  String get premium_ad_free => 'Rekl amsız deneyim';
 }

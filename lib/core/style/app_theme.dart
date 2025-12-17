@@ -17,20 +17,20 @@ class AppTheme {
       colorScheme: _lightColorScheme,
       textTheme: _textTheme,
       primaryTextTheme: _textTheme,
-      appBarTheme: _appBarTheme,
+      appBarTheme: _lightAppBarTheme,
       elevatedButtonTheme: _elevatedButtonTheme,
       outlinedButtonTheme: _outlinedButtonTheme,
       textButtonTheme: _textButtonTheme,
-      inputDecorationTheme: _inputDecorationTheme,
-      cardTheme: _cardTheme,
-      bottomNavigationBarTheme: _bottomNavigationBarTheme,
+      inputDecorationTheme: _lightInputDecorationTheme,
+      cardTheme: _lightCardTheme,
+      bottomNavigationBarTheme: _lightBottomNavigationBarTheme,
       floatingActionButtonTheme: _floatingActionButtonTheme,
-      bottomSheetTheme: _bottomSheetTheme,
-      tabBarTheme: _tabBarTheme,
-      tooltipTheme: _tooltipTheme,
-      popupMenuTheme: _popupMenuTheme,
-      drawerTheme: _drawerTheme,
-      navigationRailTheme: _navigationRailTheme,
+      bottomSheetTheme: _lightBottomSheetTheme,
+      tabBarTheme: _lightTabBarTheme,
+      tooltipTheme: _lightTooltipTheme,
+      popupMenuTheme: _lightPopupMenuTheme,
+      drawerTheme: _lightDrawerTheme,
+      navigationRailTheme: _lightNavigationRailTheme,
     );
   }
 
@@ -42,20 +42,20 @@ class AppTheme {
       colorScheme: _darkColorScheme,
       textTheme: _textTheme,
       primaryTextTheme: _textTheme,
-      appBarTheme: _appBarTheme,
+      appBarTheme: _darkAppBarTheme,
       elevatedButtonTheme: _elevatedButtonTheme,
       outlinedButtonTheme: _outlinedButtonTheme,
       textButtonTheme: _textButtonTheme,
-      inputDecorationTheme: _inputDecorationTheme,
-      cardTheme: _cardTheme,
-      bottomNavigationBarTheme: _bottomNavigationBarTheme,
+      inputDecorationTheme: _darkInputDecorationTheme,
+      cardTheme: _darkCardTheme,
+      bottomNavigationBarTheme: _darkBottomNavigationBarTheme,
       floatingActionButtonTheme: _floatingActionButtonTheme,
-      bottomSheetTheme: _bottomSheetTheme,
-      tabBarTheme: _tabBarTheme,
-      tooltipTheme: _tooltipTheme,
-      popupMenuTheme: _popupMenuTheme,
-      drawerTheme: _drawerTheme,
-      navigationRailTheme: _navigationRailTheme,
+      bottomSheetTheme: _darkBottomSheetTheme,
+      tabBarTheme: _darkTabBarTheme,
+      tooltipTheme: _darkTooltipTheme,
+      popupMenuTheme: _darkPopupMenuTheme,
+      drawerTheme: _darkDrawerTheme,
+      navigationRailTheme: _darkNavigationRailTheme,
     );
   }
 
@@ -125,20 +125,36 @@ class AppTheme {
     labelSmall: AppTypography.buttonSmall,
   );
 
-  // App Bar Theme
-  static AppBarTheme get _appBarTheme => AppBarTheme(
-    backgroundColor: Colors.transparent, // surface from colorScheme
-    foregroundColor: Colors.transparent, // onSurface from colorScheme
+  // App Bar Themes
+  static AppBarTheme get _lightAppBarTheme => AppBarTheme(
+    backgroundColor: AppColors.white,
+    foregroundColor: AppColors.neutral900,
     elevation: AppSpacing.elevationXs,
     scrolledUnderElevation: AppSpacing.elevationSm,
     centerTitle: true,
     titleTextStyle: AppTypography.headline3.copyWith(
-      color: Colors.transparent, // onSurface from colorScheme
+      color: AppColors.neutral900,
     ),
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.light,
+    ),
+  );
+
+  static AppBarTheme get _darkAppBarTheme => AppBarTheme(
+    backgroundColor: AppColors.neutralDark900,
+    foregroundColor: AppColors.white,
+    elevation: AppSpacing.elevationXs,
+    scrolledUnderElevation: AppSpacing.elevationSm,
+    centerTitle: true,
+    titleTextStyle: AppTypography.headline3.copyWith(
+      color: AppColors.white,
+    ),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
     ),
   );
 
@@ -178,11 +194,11 @@ class AppTheme {
     ),
   );
 
-  // Input Decoration Theme
-  static const InputDecorationTheme _inputDecorationTheme =
+  // Input Decoration Themes
+  static const InputDecorationTheme _lightInputDecorationTheme =
       InputDecorationTheme(
     filled: true,
-    fillColor: AppColors.neutralDark700,
+    fillColor: AppColors.neutral500,
     border: OutlineInputBorder(
       borderRadius: AppSpacing.borderRadiusMd,
       borderSide: BorderSide(color: AppColors.neutral600),
@@ -209,20 +225,66 @@ class AppTheme {
     errorStyle: AppTypography.textValidation,
   );
 
-  // Card Theme
-  static CardThemeData get _cardTheme => CardThemeData(
-    color: Colors.transparent, // surface from colorScheme
+  static const InputDecorationTheme _darkInputDecorationTheme =
+      InputDecorationTheme(
+    filled: true,
+    fillColor: AppColors.neutralDark600,
+    border: OutlineInputBorder(
+      borderRadius: AppSpacing.borderRadiusMd,
+      borderSide: BorderSide(color: AppColors.neutralDark700),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: AppSpacing.borderRadiusMd,
+      borderSide: BorderSide(color: AppColors.neutralDark700),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: AppSpacing.borderRadiusMd,
+      borderSide: BorderSide(color: AppColors.primary, width: 2),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: AppSpacing.borderRadiusMd,
+      borderSide: BorderSide(color: AppColors.errorPink),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: AppSpacing.borderRadiusMd,
+      borderSide: BorderSide(color: AppColors.errorPink, width: 2),
+    ),
+    contentPadding: AppSpacing.paddingHMd,
+    labelStyle: AppTypography.textOutsideTitle,
+    hintStyle: AppTypography.textPlaceholder,
+    errorStyle: AppTypography.textValidation,
+  );
+
+  // Card Themes
+  static CardThemeData get _lightCardTheme => CardThemeData(
+    color: AppColors.white,
     elevation: AppSpacing.elevationSm,
     shape: RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusLg),
     margin: AppSpacing.paddingSm,
   );
 
-  // Bottom Navigation Bar Theme
-  static const BottomNavigationBarThemeData _bottomNavigationBarTheme =
+  static CardThemeData get _darkCardTheme => CardThemeData(
+    color: AppColors.neutralDark600,
+    elevation: AppSpacing.elevationSm,
+    shape: RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusLg),
+    margin: AppSpacing.paddingSm,
+  );
+
+  // Bottom Navigation Bar Themes
+  static const BottomNavigationBarThemeData _lightBottomNavigationBarTheme =
       BottomNavigationBarThemeData(
-    backgroundColor: Colors.transparent, // surface from colorScheme
+    backgroundColor: AppColors.white,
     selectedItemColor: AppColors.primary,
-    unselectedItemColor: Colors.transparent, // onSurfaceVariant from colorScheme
+    unselectedItemColor: AppColors.neutral700,
+    type: BottomNavigationBarType.fixed,
+    elevation: AppSpacing.elevationMd,
+  );
+
+  static const BottomNavigationBarThemeData _darkBottomNavigationBarTheme =
+      BottomNavigationBarThemeData(
+    backgroundColor: AppColors.neutralDark900,
+    selectedItemColor: AppColors.primary,
+    unselectedItemColor: AppColors.neutralDark800,
     type: BottomNavigationBarType.fixed,
     elevation: AppSpacing.elevationMd,
   );
@@ -235,9 +297,9 @@ class AppTheme {
     elevation: AppSpacing.elevationMd,
   );
 
-  // Bottom Sheet Theme
-  static BottomSheetThemeData get _bottomSheetTheme => BottomSheetThemeData(
-    backgroundColor: Colors.transparent, // surface from colorScheme
+  // Bottom Sheet Themes
+  static BottomSheetThemeData get _lightBottomSheetTheme => BottomSheetThemeData(
+    backgroundColor: AppColors.white,
     elevation: AppSpacing.elevationLg,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
@@ -246,34 +308,66 @@ class AppTheme {
     ),
   );
 
-  // Tab Bar Theme
-  static const TabBarThemeData _tabBarTheme = TabBarThemeData(
+  static BottomSheetThemeData get _darkBottomSheetTheme => BottomSheetThemeData(
+    backgroundColor: AppColors.neutralDark600,
+    elevation: AppSpacing.elevationLg,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(AppSpacing.radiusLg),
+      ),
+    ),
+  );
+
+  // Tab Bar Themes
+  static const TabBarThemeData _lightTabBarTheme = TabBarThemeData(
     labelColor: AppColors.primary,
-    unselectedLabelColor: Colors.transparent, // onSurfaceVariant from colorScheme
+    unselectedLabelColor: AppColors.neutral700,
     indicatorColor: AppColors.primary,
     labelStyle: AppTypography.buttonSmall,
     unselectedLabelStyle: AppTypography.buttonSmall,
   );
 
-  // Tooltip Theme
-  static const TooltipThemeData _tooltipTheme = TooltipThemeData(
+  static const TabBarThemeData _darkTabBarTheme = TabBarThemeData(
+    labelColor: AppColors.primary,
+    unselectedLabelColor: AppColors.neutralDark800,
+    indicatorColor: AppColors.primary,
+    labelStyle: AppTypography.buttonSmall,
+    unselectedLabelStyle: AppTypography.buttonSmall,
+  );
+
+  // Tooltip Themes
+  static const TooltipThemeData _lightTooltipTheme = TooltipThemeData(
     decoration: BoxDecoration(
-      color: AppColors.neutralDark800,
+      color: AppColors.neutral800,
       borderRadius: AppSpacing.borderRadiusSm,
     ),
     textStyle: AppTypography.buttonSmall,
   );
 
-  // Popup Menu Theme
-  static PopupMenuThemeData get _popupMenuTheme => PopupMenuThemeData(
-    color: Colors.transparent, // surface from colorScheme
+  static const TooltipThemeData _darkTooltipTheme = TooltipThemeData(
+    decoration: BoxDecoration(
+      color: AppColors.neutralDark700,
+      borderRadius: AppSpacing.borderRadiusSm,
+    ),
+    textStyle: AppTypography.buttonSmall,
+  );
+
+  // Popup Menu Themes
+  static PopupMenuThemeData get _lightPopupMenuTheme => PopupMenuThemeData(
+    color: AppColors.white,
     elevation: AppSpacing.elevationMd,
     shape: RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
   );
 
-  // Drawer Theme
-  static DrawerThemeData get _drawerTheme => DrawerThemeData(
-    backgroundColor: Colors.transparent, // surface from colorScheme
+  static PopupMenuThemeData get _darkPopupMenuTheme => PopupMenuThemeData(
+    color: AppColors.neutralDark600,
+    elevation: AppSpacing.elevationMd,
+    shape: RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
+  );
+
+  // Drawer Themes
+  static DrawerThemeData get _lightDrawerTheme => DrawerThemeData(
+    backgroundColor: AppColors.white,
     elevation: AppSpacing.elevationLg,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -283,12 +377,32 @@ class AppTheme {
     ),
   );
 
-  // Navigation Rail Theme
-  static NavigationRailThemeData get _navigationRailTheme =>
+  static DrawerThemeData get _darkDrawerTheme => DrawerThemeData(
+    backgroundColor: AppColors.neutralDark900,
+    elevation: AppSpacing.elevationLg,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(AppSpacing.radiusLg),
+        bottomRight: Radius.circular(AppSpacing.radiusLg),
+      ),
+    ),
+  );
+
+  // Navigation Rail Themes
+  static NavigationRailThemeData get _lightNavigationRailTheme =>
       NavigationRailThemeData(
-    backgroundColor: Colors.transparent, // surface from colorScheme
+    backgroundColor: AppColors.white,
     selectedIconTheme: IconThemeData(color: AppColors.primary),
-    unselectedIconTheme: IconThemeData(color: Colors.transparent), // onSurfaceVariant from colorScheme
+    unselectedIconTheme: IconThemeData(color: AppColors.neutral700),
+    selectedLabelTextStyle: AppTypography.buttonSmall,
+    unselectedLabelTextStyle: AppTypography.buttonSmall,
+  );
+
+  static NavigationRailThemeData get _darkNavigationRailTheme =>
+      NavigationRailThemeData(
+    backgroundColor: AppColors.neutralDark900,
+    selectedIconTheme: IconThemeData(color: AppColors.primary),
+    unselectedIconTheme: IconThemeData(color: AppColors.neutralDark800),
     selectedLabelTextStyle: AppTypography.buttonSmall,
     unselectedLabelTextStyle: AppTypography.buttonSmall,
   );

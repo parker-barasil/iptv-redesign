@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 
 class SliderTileWidget extends StatelessWidget {
   final IconData icon;
@@ -38,9 +39,7 @@ class SliderTileWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   label,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+                  style: AppTypography.body2Medium,
                 ),
               ),
               Container(
@@ -50,9 +49,7 @@ class SliderTileWidget extends StatelessWidget {
                 ),
                 child: Text(
                   value.toStringAsFixed(1),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTypography.body3SemiBold,
                 ),
               ),
             ],

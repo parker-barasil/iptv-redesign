@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/widgets/watch_history/watch_history_card.dart';
 import 'package:flutter/material.dart';
 import '../../models/watch_history.dart';
@@ -31,13 +32,13 @@ class WatchHistoryListScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.history, size: 64, color: Colors.grey),
+                  Icon(Icons.history, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
                   SizedBox(height: 16),
                   Text(
                     context.loc.not_found_in_category,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyLarge?.copyWith(color: Colors.grey),
+                    style: AppTypography.body1Regular.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -58,9 +59,9 @@ class WatchHistoryListScreen extends StatelessWidget {
                   width: cardWidth,
                   height: cardHeight,
                   showProgress:
-                      title == 'Devam Et' ||
-                      title == 'Filmler' ||
-                      title == 'Diziler',
+                      title == context.loc.continue_watching ||
+                      title == context.loc.films ||
+                      title == context.loc.series_list,
                   onTap: () => onHistoryTap?.call(history),
                   onRemove: () => onHistoryRemove?.call(history),
                 );

@@ -673,4 +673,127 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get new_ep => '新的';
+
+  @override
+  String get not_provided => '未提供';
+
+  @override
+  String get unknown => '未知';
+
+  @override
+  String get no_audio_track => '無音軌';
+
+  @override
+  String get no_subtitle_track => '無字幕軌';
+
+  @override
+  String get repository_not_available => '存儲庫不可用';
+
+  @override
+  String get no_favorites_yet => '還沒有收藏';
+
+  @override
+  String get series_not_found => '找不到系列';
+
+  @override
+  String get sort_a_to_z => 'A → Z';
+
+  @override
+  String get sort_z_to_a => 'Z → A';
+
+  @override
+  String get xtream_codes => 'Xtream Codes';
+
+  @override
+  String get m3u_playlist_type => 'M3U 播放列表';
+
+  @override
+  String get xstream_playlist => 'XStream 播放列表';
+
+  @override
+  String get loading => '載入中...';
+
+  @override
+  String error_message(Object message) {
+    return '錯誤: $message';
+  }
+
+  @override
+  String get live_broadcast => '直播';
+
+  @override
+  String get film => '電影';
+
+  @override
+  String get series => '系列';
+
+  @override
+  String get continue_watching => '繼續';
+
+  @override
+  String get films => '電影';
+
+  @override
+  String get series_list => '系列';
+
+  @override
+  String get instructions_title => '如何將播放列表添加到 IPTV Smart Player';
+
+  @override
+  String get instruction_step_1_title => '查找 M3U 播放列表';
+
+  @override
+  String get instruction_step_1_subtitle => '在線搜索公開可用的 IPTV 播放列表 (M3U)';
+
+  @override
+  String get instruction_step_2_title => '複製鏈接或下載';
+
+  @override
+  String get instruction_step_2_subtitle => '複製播放列表鏈接或下載 .m3u 文件';
+
+  @override
+  String get instruction_step_3_title => '在應用中導入播放列表';
+
+  @override
+  String get instruction_step_3_subtitle => '在應用中：添加播放列表 → 導入 URL → 粘貼鏈接';
+
+  @override
+  String get instruction_step_4_title => '開始觀看';
+
+  @override
+  String get instruction_step_4_subtitle => '打開播放列表並享受您的頻道。';
+
+  @override
+  String get favorites_list_coming_soon => '收藏列表即將添加';
+
+  @override
+  String get default_m3u_playlist_name => 'M3U 播放列表-1';
+
+  @override
+  String get default_xtream_code_playlist_name => '播放列表-1';
+
+  @override
+  String get api_url_example_hint => 'http://example.com:8080';
+
+  @override
+  String get stream_id_label => '流 ID';
+
+  @override
+  String rating_accessibility_label(Object rating) {
+    return '評分 $rating';
+  }
+
+  @override
+  String categories_load_error(Object error) {
+    return '無法加載類別: $error';
+  }
+
+  @override
+  String get premium_unlimited_playlists => '无限播放列表';
+
+  @override
+  String get premium_password_protected => '密码保护的播放列表';
+
+  @override
+  String get premium_ad_free => '无广告体验';
 }

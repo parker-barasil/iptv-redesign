@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:another_iptv_player/core/style/app_colors.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import '../../../models/playlist_content_model.dart';
 import '../../../services/event_bus.dart';
@@ -40,8 +41,8 @@ class _VideoTitleWidgetState extends State<VideoTitleWidget> {
   Widget build(BuildContext context) {
     return Text(
       videoTitle,
-      style: TextStyle(
-        color:  AppColors.white,
+      style: AppTypography.body1Regular.copyWith(
+        color: AppColors.white,
       ),
       maxLines: 1,
       overflow: TextOverflow.clip,

@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/database/database.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/screens/settings/subtitle_settings_section.dart';
 import 'package:another_iptv_player/services/service_locator.dart';
 import 'package:another_iptv_player/utils/get_playlist_type.dart';
@@ -18,6 +19,7 @@ import '../../services/app_state.dart';
 import '../../services/m3u_parser.dart';
 import '../../widgets/dropdown_tile_widget.dart';
 import '../../widgets/section_title_widget.dart';
+import '../../utils/toast_utils.dart';
 import '../m3u/m3u_data_loader_screen.dart';
 import '../playlist_screen.dart';
 import '../xtream-codes/xtream_code_data_loader_screen.dart';
@@ -117,15 +119,15 @@ class _GeneralSettingsWidgetState extends State<GeneralSettingsWidget> {
                 items: [
                   DropdownMenuItem(
                     value: 'system',
-                    child: Text(context.loc.standard),
+                    child: Text(context.loc.standard, style: AppTypography.body2Regular),
                   ),
                   DropdownMenuItem(
                     value: 'light',
-                    child: Text(context.loc.light),
+                    child: Text(context.loc.light, style: AppTypography.body2Regular),
                   ),
                   DropdownMenuItem(
                     value: 'dark',
-                    child: Text(context.loc.dark),
+                    child: Text(context.loc.dark, style: AppTypography.body2Regular),
                   ),
                 ],
                 onChanged: (value) async {
@@ -148,7 +150,7 @@ class _GeneralSettingsWidgetState extends State<GeneralSettingsWidget> {
             children: [
               ListTile(
                 leading: const Icon(Icons.home),
-                title: Text(context.loc.playlist_list),
+                title: Text(context.loc.playlist_list, style: AppTypography.body1Regular),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () async {
                   await UserPreferences.removeLastPlaylist();
@@ -164,9 +166,9 @@ class _GeneralSettingsWidgetState extends State<GeneralSettingsWidget> {
               const Divider(height: 1),
               SwitchListTile(
                 secondary: const Icon(Icons.play_circle_outline),
-                title: Text(context.loc.continue_on_background),
+                title: Text(context.loc.continue_on_background, style: AppTypography.body1Regular),
                 subtitle: Text(
-                    context.loc.continue_on_background_description),
+                    context.loc.continue_on_background_description, style: AppTypography.body2Regular),
                 value: _backgroundPlayEnabled,
                 onChanged: _saveBackgroundPlaySetting,
               ),
@@ -174,7 +176,7 @@ class _GeneralSettingsWidgetState extends State<GeneralSettingsWidget> {
               if (isXtreamCode)
                 ListTile(
                   leading: const Icon(Icons.subtitles_outlined),
-                  title: Text(context.loc.hide_category),
+                  title: Text(context.loc.hide_category, style: AppTypography.body1Regular),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () async {
                     final result = await Navigator.push(
@@ -209,9 +211,9 @@ class _GeneralSettingsWidgetState extends State<GeneralSettingsWidget> {
               const Divider(height: 1),
               ListTile(
                 leading: const Icon(Icons.subtitles_outlined),
-                title: Text(context.loc.subtitle_settings),
+                title: Text(context.loc.subtitle_settings, style: AppTypography.body1Regular),
                 subtitle:
-                Text(context.loc.subtitle_settings_description),
+                Text(context.loc.subtitle_settings_description, style: AppTypography.body2Regular),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   Navigator.push(
@@ -226,7 +228,7 @@ class _GeneralSettingsWidgetState extends State<GeneralSettingsWidget> {
               const Divider(height: 1),
               ListTile(
                 leading: const Icon(Icons.refresh),
-                title: Text(context.loc.refresh_contents),
+                title: Text(context.loc.refresh_contents, style: AppTypography.body1Regular),
                 trailing: const Icon(Icons.cloud_download),
                 onTap: () {
                   if (isXtreamCode) {
@@ -255,7 +257,7 @@ class _GeneralSettingsWidgetState extends State<GeneralSettingsWidget> {
                   ...supportedLanguages.map(
                         (language) => DropdownMenuItem(
                       value: Locale(language['code']),
-                      child: Text(language['name']),
+                      child: Text(language['name'], style: AppTypography.body2Regular),
                     ),
                   ),
                 ],
@@ -332,9 +334,9 @@ class _GeneralSettingsWidgetState extends State<GeneralSettingsWidget> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.loc.file_selection_error)),
-      );
+      if (mounted) {
+        ToastUtils.showError(context, context.loc.file_selection_error);
+      }
     }
   }
 

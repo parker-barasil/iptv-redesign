@@ -1385,6 +1385,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New'**
   String get new_ep;
+
+  /// No description provided for @not_provided.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Provided'**
+  String get not_provided;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @no_audio_track.
+  ///
+  /// In en, this message translates to:
+  /// **'No Audio Track'**
+  String get no_audio_track;
+
+  /// No description provided for @no_subtitle_track.
+  ///
+  /// In en, this message translates to:
+  /// **'No Subtitle Track'**
+  String get no_subtitle_track;
+
+  /// No description provided for @repository_not_available.
+  ///
+  /// In en, this message translates to:
+  /// **'Repository not available'**
+  String get repository_not_available;
+
+  /// No description provided for @no_favorites_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites yet'**
+  String get no_favorites_yet;
+
+  /// No description provided for @series_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Series not found'**
+  String get series_not_found;
+
+  /// No description provided for @sort_a_to_z.
+  ///
+  /// In en, this message translates to:
+  /// **'A → Z'**
+  String get sort_a_to_z;
+
+  /// No description provided for @sort_z_to_a.
+  ///
+  /// In en, this message translates to:
+  /// **'Z → A'**
+  String get sort_z_to_a;
+
+  /// No description provided for @xtream_codes.
+  ///
+  /// In en, this message translates to:
+  /// **'Xtream Codes'**
+  String get xtream_codes;
+
+  /// No description provided for @m3u_playlist_type.
+  ///
+  /// In en, this message translates to:
+  /// **'M3U Playlist'**
+  String get m3u_playlist_type;
+
+  /// No description provided for @xstream_playlist.
+  ///
+  /// In en, this message translates to:
+  /// **'XStream Playlist'**
+  String get xstream_playlist;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @error_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String error_message(Object message);
+
+  /// No description provided for @live_broadcast.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get live_broadcast;
+
+  /// No description provided for @film.
+  ///
+  /// In en, this message translates to:
+  /// **'Movie'**
+  String get film;
+
+  /// No description provided for @series.
+  ///
+  /// In en, this message translates to:
+  /// **'Series'**
+  String get series;
+
+  /// No description provided for @continue_watching.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_watching;
+
+  /// No description provided for @films.
+  ///
+  /// In en, this message translates to:
+  /// **'Movies'**
+  String get films;
+
+  /// No description provided for @series_list.
+  ///
+  /// In en, this message translates to:
+  /// **'Series'**
+  String get series_list;
+
+  /// No description provided for @instructions_title.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Add Playlist to IPTV Smart Player'**
+  String get instructions_title;
+
+  /// No description provided for @instruction_step_1_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Find M3U Playlist'**
+  String get instruction_step_1_title;
+
+  /// No description provided for @instruction_step_1_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search online for a publicly available IPTV playlist (M3U)'**
+  String get instruction_step_1_subtitle;
+
+  /// No description provided for @instruction_step_2_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Link or Download'**
+  String get instruction_step_2_title;
+
+  /// No description provided for @instruction_step_2_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the playlist link or download the .m3u file'**
+  String get instruction_step_2_subtitle;
+
+  /// No description provided for @instruction_step_3_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Playlist in App'**
+  String get instruction_step_3_title;
+
+  /// No description provided for @instruction_step_3_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In the app: Add Playlist → Import URL → Paste Link'**
+  String get instruction_step_3_subtitle;
+
+  /// No description provided for @instruction_step_4_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Watching'**
+  String get instruction_step_4_title;
+
+  /// No description provided for @instruction_step_4_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the playlist and enjoy your channels.'**
+  String get instruction_step_4_subtitle;
+
+  /// No description provided for @favorites_list_coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites list will be added soon'**
+  String get favorites_list_coming_soon;
+
+  /// No description provided for @default_m3u_playlist_name.
+  ///
+  /// In en, this message translates to:
+  /// **'M3U Playlist-1'**
+  String get default_m3u_playlist_name;
+
+  /// No description provided for @default_xtream_code_playlist_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Playlist-1'**
+  String get default_xtream_code_playlist_name;
+
+  /// No description provided for @api_url_example_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'http://example.com:8080'**
+  String get api_url_example_hint;
+
+  /// No description provided for @stream_id_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Stream ID'**
+  String get stream_id_label;
+
+  /// No description provided for @rating_accessibility_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating {rating}'**
+  String rating_accessibility_label(Object rating);
+
+  /// No description provided for @categories_load_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories could not be loaded: {error}'**
+  String categories_load_error(Object error);
+
+  /// No description provided for @premium_unlimited_playlists.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited playlists'**
+  String get premium_unlimited_playlists;
+
+  /// No description provided for @premium_password_protected.
+  ///
+  /// In en, this message translates to:
+  /// **'Playlists with password'**
+  String get premium_password_protected;
+
+  /// No description provided for @premium_ad_free.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad-free experience'**
+  String get premium_ad_free;
 }
 
 class _AppLocalizationsDelegate

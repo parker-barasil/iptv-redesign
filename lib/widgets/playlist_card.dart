@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import '../../../../models/playlist_model.dart';
 import '../../utils/playlist_utils.dart';
@@ -21,7 +22,8 @@ class PlaylistCard extends StatefulWidget {
   State<PlaylistCard> createState() => _PlaylistCardState();
 }
 
-class _PlaylistCardState extends State<PlaylistCard> with SingleTickerProviderStateMixin {
+class _PlaylistCardState extends State<PlaylistCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   bool _isHovered = false;
@@ -60,10 +62,10 @@ class _PlaylistCardState extends State<PlaylistCard> with SingleTickerProviderSt
       child: Card(
         elevation: _isHovered ? AppSpacing.elevationMd : AppSpacing.elevationSm,
         margin: EdgeInsets.only(bottom: AppSpacing.md),
-        shadowColor: PlaylistUtils.getPlaylistColor(widget.playlist.type).withValues(alpha: 0.3),
-        shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
-        ),
+        shadowColor: PlaylistUtils.getPlaylistColor(
+          widget.playlist.type,
+        ).withValues(alpha: 0.3),
+        shape: RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusLg),
         child: InkWell(
           onTap: widget.onTap,
           onHover: _onHoverChanged,
@@ -78,7 +80,9 @@ class _PlaylistCardState extends State<PlaylistCard> with SingleTickerProviderSt
                       end: Alignment.bottomRight,
                       colors: [
                         Theme.of(context).colorScheme.surface,
-                        AppPalette.primaryLightOf(context).withValues(alpha: 0.1),
+                        AppPalette.primaryLightOf(
+                          context,
+                        ).withValues(alpha: 0.1),
                       ],
                     )
                   : null,
@@ -112,10 +116,11 @@ class _PlaylistIcon extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            PlaylistUtils.getPlaylistColor(type),
-            PlaylistUtils.getPlaylistColor(type).withValues(alpha: 0.7),
-          ],
+          colors: AppColors.accentGradientList,
+          // colors: [
+          //   PlaylistUtils.getPlaylistColor(type),
+          //   PlaylistUtils.getPlaylistColor(type).withValues(alpha: 0.7),
+          // ],
         ),
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
         boxShadow: [
@@ -147,9 +152,7 @@ class _PlaylistInfo extends StatelessWidget {
       children: [
         Text(
           playlist.name,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: AppTypography.headline4,
         ),
         SizedBox(height: AppSpacing.xs),
         Row(
@@ -164,9 +167,9 @@ class _PlaylistInfo extends StatelessWidget {
             SizedBox(width: AppSpacing.xs),
             Text(
               PlaylistUtils.formatDate(playlist.createdAt),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppPalette.neutral700Of(context),
-                  ),
+              style: AppTypography.body3Regular.copyWith(
+                color: AppPalette.neutral700Of(context),
+              ),
             ),
           ],
         ),
@@ -174,9 +177,9 @@ class _PlaylistInfo extends StatelessWidget {
           SizedBox(height: AppSpacing.xs),
           Text(
             playlist.url!,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppPalette.neutral700Of(context),
-                ),
+            style: AppTypography.body3Regular.copyWith(
+              color: AppPalette.neutral700Of(context),
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -202,22 +205,15 @@ class _TypeChip extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            color.withValues(alpha: 0.15),
-            color.withValues(alpha: 0.1),
-          ],
+          colors: [color.withValues(alpha: 0.15), color.withValues(alpha: 0.1)],
         ),
         borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-        border: Border.all(
-          color: color.withValues(alpha: 0.3),
-          width: 1,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
       ),
       child: Text(
         type.toString().split('.').last.toUpperCase(),
-        style: TextStyle(
+        style: AppTypography.body3SemiBold.copyWith(
           fontSize: 11,
-          fontWeight: FontWeight.bold,
           color: color,
           letterSpacing: 0.5,
         ),
@@ -238,24 +234,18 @@ class _PlaylistMenu extends StatelessWidget {
         Icons.more_vert_rounded,
         color: AppPalette.neutral700Of(context),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: AppSpacing.borderRadiusMd,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusMd),
       elevation: AppSpacing.elevationMd,
       itemBuilder: (context) => [
         PopupMenuItem(
           value: 'delete',
           child: Row(
             children: [
-              Icon(
-                Icons.delete_rounded,
-                color: AppColors.errorPink,
-                size: 20,
-              ),
+              Icon(Icons.delete_rounded, color: AppColors.errorPink, size: 20),
               SizedBox(width: AppSpacing.sm),
               Text(
                 context.loc.delete,
-                style: TextStyle(color: AppColors.errorPink),
+                style: AppTypography.body2Regular.copyWith(color: AppColors.errorPink),
               ),
             ],
           ),

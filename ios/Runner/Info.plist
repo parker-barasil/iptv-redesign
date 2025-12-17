@@ -9,7 +9,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Another IPTV Player</string>
+	<string>Tvapp</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,7 +17,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>flutter_audio_service_demo</string>
+	<string>Tvapp</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -34,6 +34,8 @@
 	<string>This app provides access to downloaded files to select M3U playlist files.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app provides access to photo library to select M3U playlist files.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We need your permission to track your usage of the app for analytics and personalized experience</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

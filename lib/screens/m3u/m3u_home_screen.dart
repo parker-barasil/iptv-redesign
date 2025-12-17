@@ -1,6 +1,6 @@
+import 'dart:ui';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
 import 'package:another_iptv_player/screens/m3u/m3u_items_screen.dart';
-import 'package:another_iptv_player/screens/m3u/m3u_playlist_settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:another_iptv_player/controllers/m3u_home_controller.dart';
@@ -8,9 +8,12 @@ import 'package:another_iptv_player/models/playlist_model.dart';
 import 'package:another_iptv_player/models/category_view_model.dart';
 import 'package:another_iptv_player/repositories/m3u_repository.dart';
 import 'package:another_iptv_player/screens/category_detail_screen.dart';
+import 'package:another_iptv_player/screens/favorites_screen.dart';
+import 'package:another_iptv_player/screens/playlist_screen.dart';
 import 'package:another_iptv_player/widgets/category_section.dart';
 import 'package:another_iptv_player/utils/responsive_helper.dart';
 import 'package:another_iptv_player/utils/navigate_by_content_type.dart';
+import 'package:another_iptv_player/feature/premium/presentation/pages/browse_content_screen.dart';
 
 import '../../services/app_state.dart';
 import '../watch_history_screen.dart';
@@ -103,6 +106,7 @@ class _M3UHomeScreenState extends State<M3UHomeScreen> {
   ) {
     return Scaffold(
       body: _buildPageView(controller),
+      extendBody: true,
       bottomNavigationBar: _buildBottomNavigationBar(context, controller),
     );
   }
@@ -135,24 +139,13 @@ class _M3UHomeScreenState extends State<M3UHomeScreen> {
         key: ValueKey('watch_history_${controller.currentIndex}'),
         playlistId: widget.playlist.id,
       ),
+      FavoritesScreen(
+        key: ValueKey('favorites_${controller.currentIndex}'),
+        playlistId: widget.playlist.id,
+      ),
       M3uItemsScreen(m3uItems: controller.m3uItems!),
-      // _buildContentPage(controller.liveCategories!, controller),
-      // _buildContentPage(controller.vodCategories!, controller),
-      // _buildContentPage(controller.seriesCategories!, controller),
-      M3uPlaylistSettingsScreen(playlist: widget.playlist),
+      PlaylistScreen(),
     ];
-  }
-
-  Widget _buildContentPage(
-    List<CategoryViewModel> categories,
-    M3UHomeController controller,
-  ) {
-    return NestedScrollView(
-      headerSliverBuilder: (context, innerBoxIsScrolled) => [
-        _buildSliverAppBar(context, controller),
-      ],
-      body: _buildCategoryList(categories),
-    );
   }
 
   SliverAppBar _buildSliverAppBar(
@@ -183,6 +176,18 @@ class _M3UHomeScreenState extends State<M3UHomeScreen> {
     M3UHomeController controller,
   ) {
     return SliverAppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.workspace_premium_rounded),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BrowseContentScreen(),
+            ),
+          );
+        },
+        tooltip: 'Premium',
+      ),
       title: SelectableText(
         controller.getPageTitle(context),
         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -190,7 +195,6 @@ class _M3UHomeScreenState extends State<M3UHomeScreen> {
       floating: true,
       snap: true,
       elevation: 0,
-      actions: [],
     );
   }
 
@@ -221,15 +225,22 @@ class _M3UHomeScreenState extends State<M3UHomeScreen> {
     );
   }
 
-  BottomNavigationBar _buildBottomNavigationBar(
+  Widget _buildBottomNavigationBar(
     BuildContext context,
     M3UHomeController controller,
   ) {
-    return BottomNavigationBar(
-      currentIndex: controller.currentIndex,
-      onTap: controller.onNavigationTap,
-      type: BottomNavigationBarType.fixed,
-      items: _buildBottomNavigationItems(context),
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: BottomNavigationBar(
+          currentIndex: controller.currentIndex,
+          onTap: controller.onNavigationTap,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
+          elevation: 0,
+          items: _buildBottomNavigationItems(context),
+        ),
+      ),
     );
   }
 
@@ -248,14 +259,19 @@ class _M3UHomeScreenState extends State<M3UHomeScreen> {
   ) {
     final navWidth = _getNavigationWidth(constraints.maxWidth);
 
-    return Container(
-      width: navWidth,
-      decoration: _getNavigationBarDecoration(context),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildDesktopNavigationItems(context, controller, constraints),
-        ],
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Container(
+          width: navWidth,
+          decoration: _getNavigationBarDecoration(context),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildDesktopNavigationItems(context, controller, constraints),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -326,7 +342,7 @@ class _M3UHomeScreenState extends State<M3UHomeScreen> {
 
   BoxDecoration _getNavigationBarDecoration(BuildContext context) {
     return BoxDecoration(
-      color: Theme.of(context).colorScheme.surface,
+      color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
       border: Border(
         right: BorderSide(color: Theme.of(context).dividerColor, width: 0.5),
       ),
@@ -364,22 +380,12 @@ class _M3UHomeScreenState extends State<M3UHomeScreen> {
   List<NavigationItem> _getNavigationItems(BuildContext context) {
     return [
       NavigationItem(icon: Icons.history, label: context.loc.history, index: 0),
-      NavigationItem(icon: Icons.all_inbox, label: context.loc.all, index: 1),
-      // NavigationItem(icon: Icons.live_tv, label: context.loc.live, index: 2),
-      // NavigationItem(
-      //   icon: Icons.movie_outlined,
-      //   label: context.loc.movie,
-      //   index: 3,
-      // ),
-      // NavigationItem(
-      //   icon: Icons.tv,
-      //   label: context.loc.series_plural,
-      //   index: 4,
-      // ),
+      NavigationItem(icon: Icons.favorite, label: context.loc.favorites, index: 1),
+      NavigationItem(icon: Icons.all_inbox, label: context.loc.all, index: 2),
       NavigationItem(
-        icon: Icons.settings,
-        label: context.loc.settings,
-        index: 2,
+        icon: Icons.playlist_play,
+        label: context.loc.my_playlists,
+        index: 3,
       ),
     ];
   }

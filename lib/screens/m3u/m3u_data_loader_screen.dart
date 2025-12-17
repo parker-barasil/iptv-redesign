@@ -4,12 +4,8 @@ import 'package:another_iptv_player/services/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/controllers/m3u_controller.dart';
 import 'package:another_iptv_player/models/playlist_model.dart';
-import 'package:another_iptv_player/models/progress_step.dart';
-import 'package:another_iptv_player/l10n/localization_extension.dart';
-import 'package:another_iptv_player/core/style/app_colors.dart';
-import 'package:another_iptv_player/core/new_widgets/app_button.dart';
+import 'package:another_iptv_player/widgets/splash_animation.dart';
 import 'package:provider/provider.dart';
-import '../playlist_screen.dart';
 import 'm3u_home_screen.dart';
 
 class M3uDataLoaderScreen extends StatefulWidget {
@@ -30,65 +26,12 @@ class M3uDataLoaderScreen extends StatefulWidget {
   M3uDataLoaderScreenState createState() => M3uDataLoaderScreenState();
 }
 
-class M3uDataLoaderScreenState extends State<M3uDataLoaderScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late AnimationController _pulseAnimationController;
-  late AnimationController _waveAnimationController;
-  late Animation<double> _progressAnimation;
-  late Animation<double> _pulseAnimation;
-  late Animation<double> _waveAnimation;
+class M3uDataLoaderScreenState extends State<M3uDataLoaderScreen> {
   late M3uController _controller;
-
-  Map<ProgressStep, String> get stepTitles => {
-    // ProgressStep.userInfo: context.loc.loading_m3u,
-    ProgressStep.categories: context.loc.preparing_categories,
-    ProgressStep.liveChannels: context.loc.preparing_live_streams,
-    ProgressStep.movies: context.loc.preparing_movies,
-    ProgressStep.series: context.loc.preparing_series,
-  };
-
-  final Map<ProgressStep, IconData> stepIcons = {
-    ProgressStep.userInfo: Icons.download_rounded,
-    ProgressStep.categories: Icons.category_rounded,
-    ProgressStep.liveChannels: Icons.live_tv_rounded,
-    ProgressStep.movies: Icons.movie_rounded,
-    ProgressStep.series: Icons.tv_rounded,
-  };
 
   @override
   void initState() {
     super.initState();
-
-    _animationController = AnimationController(
-      duration: Duration(milliseconds: 3000),
-      vsync: this,
-    );
-
-    _pulseAnimationController = AnimationController(
-      duration: Duration(milliseconds: 1500),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _waveAnimationController = AnimationController(
-      duration: Duration(milliseconds: 2000),
-      vsync: this,
-    )..repeat();
-
-    _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-
-    _pulseAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
-      CurvedAnimation(
-        parent: _pulseAnimationController,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _waveAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _waveAnimationController, curve: Curves.linear),
-    );
 
     _controller = M3uController(
       playlistId: widget.playlist.id,
@@ -101,382 +44,39 @@ class M3uDataLoaderScreenState extends State<M3uDataLoaderScreen>
 
   @override
   void dispose() {
-    _animationController.dispose();
-    _pulseAnimationController.dispose();
-    _waveAnimationController.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   Future<void> _startLoading() async {
+    // Start loading data in background
     final success = await _controller.loadAllData();
 
     if (success) {
-      _animationController.animateTo(1.0);
-      _pulseAnimationController.stop();
-      _waveAnimationController.stop();
-      // await Future.delayed(Duration(milliseconds: 800));
-
       AppState.currentPlaylist = widget.playlist;
       await UserPreferences.setLastPlaylist(widget.playlist.id);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider.value(
-            value: _controller,
-            child: M3UHomeScreen(playlist: widget.playlist),
-          ),
-        ),
-        (route) => false,
-      );
-    }
-  }
 
-  double _getProgressValue(ProgressStep step) {
-    switch (step) {
-      case ProgressStep.userInfo:
-        return 0.2;
-      case ProgressStep.categories:
-        return 0.4;
-      case ProgressStep.liveChannels:
-        return 0.6;
-      case ProgressStep.movies:
-        return 0.8;
-      case ProgressStep.series:
-        return 1.0;
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChangeNotifierProvider.value(
+              value: _controller,
+              child: M3UHomeScreen(playlist: widget.playlist),
+            ),
+          ),
+          (route) => false,
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppColors.neutralDark900,
-              AppColors.neutralDark800,
-              AppColors.primary.withValues(alpha: 0.3),
-            ],
-          ),
-        ),
-        child: ChangeNotifierProvider.value(
-          value: _controller,
-          child: Consumer<M3uController>(
-            builder: (context, controller, child) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _animationController.animateTo(
-                  _getProgressValue(controller.currentStep),
-                );
-              });
-
-              return SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 40),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Top Section - Logo
-                      Column(
-                        children: [
-                          AnimatedBuilder(
-                            animation: _pulseAnimation,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: _pulseAnimation.value,
-                                child: Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: RadialGradient(
-                                      colors: [
-                                        AppColors.primary,
-                                        AppColors.infoBlue,
-                                      ],
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AppColors.primary.withValues(alpha: 0.3),
-                                        blurRadius: 20,
-                                        spreadRadius: 5,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Icon(
-                                    Icons.playlist_play_rounded,
-                                    size: 60,
-                                    color: AppColors.white,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: 24),
-                          Text(
-                            'Another IPTV Player',
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w300,
-                              color: AppColors.white,
-                              letterSpacing: 2,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            context.loc.slogan,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.white.withValues(alpha: 0.7),
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      // Middle Section - Current Step
-                      Column(
-                        children: [
-                          // Wave Animation
-                          AnimatedBuilder(
-                            animation: _waveAnimation,
-                            builder: (context, child) {
-                              return SizedBox(
-                                width: 200,
-                                height: 200,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    // Outer waves
-                                    for (int i = 0; i < 3; i++)
-                                      Transform.scale(
-                                        scale:
-                                            1 +
-                                            (i * 0.3) +
-                                            (_waveAnimation.value * 0.5),
-                                        child: Container(
-                                          width: 120 + (i * 20),
-                                          height: 120 + (i * 20),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: AppColors.primary
-                                                  .withValues(
-                                                    alpha: (1 - _waveAnimation.value) *
-                                                        (0.3 - i * 0.1),
-                                                  ),
-                                              width: 2,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    // Center icon
-                                    Container(
-                                      width: 80,
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            AppColors.primary,
-                                            AppColors.infoBlue,
-                                          ],
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        stepIcons[controller.currentStep],
-                                        size: 40,
-                                        color: AppColors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-
-                          SizedBox(height: 32),
-
-                          Text(
-                            stepTitles[controller.currentStep]!,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.white,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-
-                          SizedBox(height: 40),
-
-                          // Progress indicator
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: ProgressStep.values.map((step) {
-                              bool isActive =
-                                  step.index <= controller.currentStep.index;
-                              bool isCurrent = step == controller.currentStep;
-
-                              return AnimatedContainer(
-                                duration: Duration(milliseconds: 300),
-                                margin: EdgeInsets.symmetric(horizontal: 4),
-                                width: isCurrent ? 32 : 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  color: isActive
-                                      ? AppColors.primary
-                                      : AppColors.white.withValues(alpha: 0.3),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-
-                      // Bottom Section - Progress
-                      Column(
-                        children: [
-                          AnimatedBuilder(
-                            animation: _progressAnimation,
-                            builder: (context, child) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      color: AppColors.white.withValues(alpha: 0.1),
-                                    ),
-                                    child: FractionallySizedBox(
-                                      alignment: Alignment.centerLeft,
-                                      widthFactor: _progressAnimation.value,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            3,
-                                          ),
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              AppColors.primary,
-                                              AppColors.infoBlue,
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    '${(_progressAnimation.value * 100).toInt()}%',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-
-                          // Error handling
-                          if (controller.errorMessage != null) ...[
-                            SizedBox(height: 32),
-                            Container(
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: AppColors.errorPink.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: AppColors.errorPink.withValues(alpha: 0.3),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.error_outline_rounded,
-                                    color: AppColors.errorPink,
-                                    size: 32,
-                                  ),
-                                  SizedBox(height: 12),
-                                  Text(
-                                    context.loc.error_occurred,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.errorPink,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    _getLocalizedError(
-                                      controller.errorKey,
-                                      controller.errorMessage!,
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors.white.withValues(alpha: 0.8),
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 16),
-                                  AppButton(
-                                    text: context.loc.close,
-                                    onPressed: () {
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PlaylistScreen(),
-                                        ),
-                                        (route) => false,
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
+      body: SplashAnimation(
+        duration: Duration(milliseconds: 2400),
       ),
     );
   }
-
-  String _getLocalizedError(String? errorKey, String fallbackMessage) {
-    return '';
-  }
-
-  //   if (errorKey == null) return fallbackMessage;
-  //
-  //   switch (errorKey) {
-  //     // case 'preparing_m3u_exception_no_source':
-  //     //   return context.loc.preparing_m3u_exception_no_source;
-  //     // case 'preparing_m3u_exception_empty':
-  //     //   return context.loc.preparing_m3u_exception_empty;
-  //     // case 'preparing_m3u_exception_parse':
-  //     //   return context.loc.preparing_m3u_exception_parse(fallbackMessage);
-  //     // case 'preparing_categories_exception':
-  //       return context.loc.preparing_categories_exception(fallbackMessage);
-  //     case 'preparing_live_streams_exception_2':
-  //       return context.loc.preparing_live_streams_exception_2(fallbackMessage);
-  //     case 'preparing_movies_exception_2':
-  //       return context.loc.preparing_movies_exception_2(fallbackMessage);
-  //     case 'preparing_series_exception_2':
-  //       return context.loc.preparing_series_exception_2(fallbackMessage);
-  //     default:
-  //       return fallbackMessage;
-  //   }
-  // }
 }

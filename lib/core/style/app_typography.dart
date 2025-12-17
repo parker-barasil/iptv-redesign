@@ -6,7 +6,7 @@ class AppTypography {
   AppTypography._();
 
   // Font families
-  static const String _fontFamily = 'Inter';
+  static const String _fontFamily = 'OpenSans';
 
   // Font weights
   static const FontWeight light = FontWeight.w300;

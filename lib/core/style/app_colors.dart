@@ -40,6 +40,16 @@ class AppColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
+  static const LinearGradient orangeGradient = LinearGradient(
+    colors: [Color(0xFFFF9A3D), Color(0xFFFF5757)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  static const LinearGradient blueGradient = LinearGradient(
+    colors: [Color(0xFF4A9FFF), Color(0xFF5145E5)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 
   // Alert Colors (Semantic)
   static const Color errorPink = Color(0xFFFF3366); // alertPink

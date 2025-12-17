@@ -691,4 +691,132 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get new_ep => 'جديد';
+
+  @override
+  String get not_provided => 'غير مقدم';
+
+  @override
+  String get unknown => 'غير معروف';
+
+  @override
+  String get no_audio_track => 'لا يوجد مسار صوتي';
+
+  @override
+  String get no_subtitle_track => 'لا يوجد مسار ترجمة';
+
+  @override
+  String get repository_not_available => 'المستودع غير متاح';
+
+  @override
+  String get no_favorites_yet => 'لا توجد مفضلات بعد';
+
+  @override
+  String get series_not_found => 'المسلسل غير موجود';
+
+  @override
+  String get sort_a_to_z => 'A → Z';
+
+  @override
+  String get sort_z_to_a => 'Z → A';
+
+  @override
+  String get xtream_codes => 'Xtream Codes';
+
+  @override
+  String get m3u_playlist_type => 'قائمة تشغيل M3U';
+
+  @override
+  String get xstream_playlist => 'قائمة تشغيل XStream';
+
+  @override
+  String get loading => 'جار التحميل...';
+
+  @override
+  String error_message(Object message) {
+    return 'خطأ: $message';
+  }
+
+  @override
+  String get live_broadcast => 'مباشر';
+
+  @override
+  String get film => 'فيلم';
+
+  @override
+  String get series => 'مسلسل';
+
+  @override
+  String get continue_watching => 'متابعة';
+
+  @override
+  String get films => 'أفلام';
+
+  @override
+  String get series_list => 'مسلسلات';
+
+  @override
+  String get instructions_title =>
+      'كيفية إضافة قائمة تشغيل إلى IPTV Smart Player';
+
+  @override
+  String get instruction_step_1_title => 'البحث عن قائمة تشغيل M3U';
+
+  @override
+  String get instruction_step_1_subtitle =>
+      'ابحث عبر الإنترنت عن قائمة تشغيل IPTV متاحة للجمهور (M3U)';
+
+  @override
+  String get instruction_step_2_title => 'نسخ الرابط أو التنزيل';
+
+  @override
+  String get instruction_step_2_subtitle =>
+      'انسخ رابط قائمة التشغيل أو قم بتنزيل ملف .m3u';
+
+  @override
+  String get instruction_step_3_title => 'استيراد قائمة التشغيل في التطبيق';
+
+  @override
+  String get instruction_step_3_subtitle =>
+      'في التطبيق: إضافة قائمة تشغيل → استيراد URL → لصق الرابط';
+
+  @override
+  String get instruction_step_4_title => 'بدء المشاهدة';
+
+  @override
+  String get instruction_step_4_subtitle =>
+      'افتح قائمة التشغيل واستمتع بقنواتك.';
+
+  @override
+  String get favorites_list_coming_soon => 'سيتم إضافة قائمة المفضلات قريبًا';
+
+  @override
+  String get default_m3u_playlist_name => 'قائمة تشغيل M3U-1';
+
+  @override
+  String get default_xtream_code_playlist_name => 'قائمة تشغيل-1';
+
+  @override
+  String get api_url_example_hint => 'http://example.com:8080';
+
+  @override
+  String get stream_id_label => 'معرف البث';
+
+  @override
+  String rating_accessibility_label(Object rating) {
+    return 'التقييم $rating';
+  }
+
+  @override
+  String categories_load_error(Object error) {
+    return 'تعذر تحميل الفئات: $error';
+  }
+
+  @override
+  String get premium_unlimited_playlists => 'قوائم تشغيل غير محدودة';
+
+  @override
+  String get premium_password_protected => 'قوائم التشغيل المحمية بكلمة مرور';
+
+  @override
+  String get premium_ad_free => 'تجربة خالية من الإعلانات';
 }

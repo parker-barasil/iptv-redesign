@@ -15,8 +15,8 @@ class AppInitializerScreen extends StatefulWidget {
 }
 
 class _AppInitializerScreenState extends State<AppInitializerScreen> {
-  bool _isLoading = true;
   Playlist? _lastPlaylist;
+  bool _isInitialized = false;
 
   @override
   void initState() {
@@ -36,14 +36,15 @@ class _AppInitializerScreenState extends State<AppInitializerScreen> {
     }
 
     setState(() {
-      _isLoading = false;
+      _isInitialized = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    // Don't show loading indicator, data should be loaded during splash
+    if (!_isInitialized) {
+      return const Scaffold(body: SizedBox.shrink());
     }
 
     if (_lastPlaylist == null) {

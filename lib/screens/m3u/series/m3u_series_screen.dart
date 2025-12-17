@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/core/style/app_colors.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/models/m3u_series.dart';
 import 'package:another_iptv_player/repositories/m3u_repository.dart';
 import 'package:another_iptv_player/screens/m3u/series/m3u_episode_screen.dart';
@@ -10,6 +11,7 @@ import '../../../controllers/favorites_controller.dart';
 import '../../../models/favorite.dart';
 
 import '../../../models/content_type.dart';
+import '../../../utils/toast_utils.dart';
 
 class M3uSeriesScreen extends StatefulWidget {
   final ContentItem contentItem;
@@ -98,14 +100,11 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
         _isFavorite = result;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result
-                ? context.loc.added_to_favorites
-                : context.loc.removed_from_favorites,
-          ),
-        ),
+      ToastUtils.showSuccess(
+        context,
+        result
+            ? context.loc.added_to_favorites
+            : context.loc.removed_from_favorites,
       );
     }
   }
@@ -162,10 +161,8 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                                 Expanded(
                                   child: Text(
                                     widget.contentItem.name,
-                                    style: const TextStyle(
+                                    style: AppTypography.headline2.copyWith(
                                       color: AppColors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
                                       shadows: [
                                         Shadow(
                                           offset: Offset(0, 1),
@@ -241,7 +238,7 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
             const SizedBox(height: 16),
             Text(
               error!,
-              style: TextStyle(fontSize: 16, color: Colors.red.shade600),
+              style: AppTypography.body1Regular.copyWith(color: Colors.red.shade600),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -274,22 +271,20 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
       children: [
         Text(
           context.loc.season,
-          style: Theme.of(
-            context,
-          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: AppTypography.headline4.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
         if (seasons.isEmpty)
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
+              border: Border.all(color: Theme.of(context).colorScheme.outline, width: 1),
             ),
             child: Row(
               children: [
-                Icon(Icons.info_outline, color: Colors.grey.shade600),
+                Icon(Icons.info_outline, color: Theme.of(context).colorScheme.onSurfaceVariant),
                 const SizedBox(width: 12),
                 Text(context.loc.not_found_in_category),
               ],
@@ -316,9 +311,9 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
       width: 200,
       margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
+        border: Border.all(color: Theme.of(context).colorScheme.outline, width: 1),
       ),
       child: Material(
         color: Colors.transparent,
@@ -337,10 +332,7 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                     Expanded(
                       child: Text(
                         context.loc.season_number(season.toString()),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: AppTypography.body1SemiBold,
                       ),
                     ),
                   ],
@@ -350,7 +342,7 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                   context.loc.episode_count(
                     getEpisodesBySeason(episodes, season).length,
                   ),
-                  style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                  style: AppTypography.body2Regular.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -402,7 +394,7 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                   height: 4,
                   width: 40,
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -413,17 +405,15 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                       Expanded(
                         child: Text(
                           context.loc.season_number(season.toString()),
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                          style: AppTypography.headline4.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ),
                       Text(
                         context.loc.episode_count(
                           '${getEpisodesBySeason(episodes, season).length}',
                         ),
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 14,
+                        style: AppTypography.body2Regular.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -467,9 +457,9 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
+        border: Border.all(color: Theme.of(context).colorScheme.outline, width: 1),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -518,10 +508,8 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                             return Center(
                               child: Text(
                                 '${episode.episodeNumber}',
-                                style: TextStyle(
+                                style: AppTypography.body1SemiBold.copyWith(
                                   color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
                                 ),
                               ),
                             );
@@ -531,10 +519,8 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                     : Center(
                         child: Text(
                           '${episode.episodeNumber}',
-                          style: TextStyle(
+                          style: AppTypography.body1SemiBold.copyWith(
                             color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
                           ),
                         ),
                       ),
@@ -550,10 +536,7 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                       episode.name,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
+                      style: AppTypography.body2SemiBold,
                     ),
                   ],
                 ),
@@ -600,7 +583,7 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
             if (loadingProgress == null) return child;
 
             return Container(
-              color: Colors.grey.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.outline,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -610,14 +593,13 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
                           ? loadingProgress.cumulativeBytesLoaded /
                                 loadingProgress.expectedTotalBytes!
                           : null,
-                      color: Colors.grey.shade400,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(height: 16),
                     Text(
                       context.loc.image_loading,
-                      style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 14,
+                      style: AppTypography.body2Regular.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -637,7 +619,7 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
 
   Widget _buildPlaceholder() {
     return Container(
-      color: Colors.grey.withOpacity(0.2),
+      color: Theme.of(context).colorScheme.outline,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -645,28 +627,24 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.tv, size: 64, color: Colors.grey.shade500),
+              child: Icon(Icons.tv, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
             const SizedBox(height: 16),
             Text(
               context.loc.image_not_found,
-              style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+              style: AppTypography.body1Medium.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               widget.contentItem.name,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey.shade700,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              style: AppTypography.headline3.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],
@@ -683,9 +661,9 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
+        border: Border.all(color: Theme.of(context).colorScheme.outline, width: 1),
       ),
       child: Row(
         children: [
@@ -704,19 +682,14 @@ class _M3uSeriesScreenState extends State<M3uSeriesScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500,
+                  style: AppTypography.body3Medium.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTypography.body2SemiBold,
                 ),
               ],
             ),

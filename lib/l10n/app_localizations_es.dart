@@ -700,4 +700,133 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get new_ep => 'Nuevo';
+
+  @override
+  String get not_provided => 'No proporcionado';
+
+  @override
+  String get unknown => 'Desconocido';
+
+  @override
+  String get no_audio_track => 'Sin pista de audio';
+
+  @override
+  String get no_subtitle_track => 'Sin pista de subtítulos';
+
+  @override
+  String get repository_not_available => 'Repositorio no disponible';
+
+  @override
+  String get no_favorites_yet => 'Aún no hay favoritos';
+
+  @override
+  String get series_not_found => 'Serie no encontrada';
+
+  @override
+  String get sort_a_to_z => 'A → Z';
+
+  @override
+  String get sort_z_to_a => 'Z → A';
+
+  @override
+  String get xtream_codes => 'Xtream Codes';
+
+  @override
+  String get m3u_playlist_type => 'Lista M3U';
+
+  @override
+  String get xstream_playlist => 'Lista XStream';
+
+  @override
+  String get loading => 'Cargando...';
+
+  @override
+  String error_message(Object message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get live_broadcast => 'En vivo';
+
+  @override
+  String get film => 'Película';
+
+  @override
+  String get series => 'Serie';
+
+  @override
+  String get continue_watching => 'Continuar';
+
+  @override
+  String get films => 'Películas';
+
+  @override
+  String get series_list => 'Series';
+
+  @override
+  String get instructions_title =>
+      'Cómo agregar lista de reproducción a IPTV Smart Player';
+
+  @override
+  String get instruction_step_1_title => 'Buscar lista M3U';
+
+  @override
+  String get instruction_step_1_subtitle =>
+      'Busque en línea una lista de reproducción IPTV disponible públicamente (M3U)';
+
+  @override
+  String get instruction_step_2_title => 'Copiar enlace o descargar';
+
+  @override
+  String get instruction_step_2_subtitle =>
+      'Copie el enlace de la lista de reproducción o descargue el archivo .m3u';
+
+  @override
+  String get instruction_step_3_title => 'Importar lista en la aplicación';
+
+  @override
+  String get instruction_step_3_subtitle =>
+      'En la aplicación: Agregar lista → Importar URL → Pegar enlace';
+
+  @override
+  String get instruction_step_4_title => 'Comenzar a ver';
+
+  @override
+  String get instruction_step_4_subtitle =>
+      'Abra la lista de reproducción y disfrute de sus canales.';
+
+  @override
+  String get favorites_list_coming_soon =>
+      'La lista de favoritos se agregará pronto';
+
+  @override
+  String get default_m3u_playlist_name => 'Lista M3U-1';
+
+  @override
+  String get default_xtream_code_playlist_name => 'Lista-1';
+
+  @override
+  String get api_url_example_hint => 'http://example.com:8080';
+
+  @override
+  String get stream_id_label => 'ID de transmisión';
+
+  @override
+  String rating_accessibility_label(Object rating) {
+    return 'Calificación $rating';
+  }
+
+  @override
+  String categories_load_error(Object error) {
+    return 'No se pudieron cargar las categorías: $error';
+  }
+
+  @override
+  String get premium_unlimited_playlists => 'Listas de reproducción ilimitadas';
+
+  @override
+  String get premium_password_protected => 'Listas protegidas con contraseña';
+
+  @override
+  String get premium_ad_free => 'Experiencia sin anuncios';
 }

@@ -1,3 +1,8 @@
+import 'package:another_iptv_player/core/constants/enums/app_button_variants_enum.dart';
+import 'package:another_iptv_player/core/new_widgets/app_button.dart';
+import 'package:another_iptv_player/core/style/app_spacing.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
+import 'package:another_iptv_player/feature/premium/presentation/pages/browse_content_screen.dart';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
 import 'package:another_iptv_player/models/m3u_item.dart';
 import 'package:another_iptv_player/screens/m3u/m3u_player_screen.dart';
@@ -54,9 +59,7 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
 
   void _filterByGroup(String group) {
     setState(() {
-      filteredItems = widget.m3uItems
-          .where((item) => item.groupTitle == group)
-          .toList();
+      filteredItems = widget.m3uItems.where((item) => item.groupTitle == group).toList();
       searchQuery = group;
     });
   }
@@ -81,17 +84,27 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
             ? TextField(
                 controller: _searchController,
                 autofocus: true,
-                decoration: InputDecoration(
-                  hintText: context.loc.search,
-                  border: InputBorder.none,
-                ),
+                decoration: InputDecoration(hintText: context.loc.search, border: InputBorder.none),
                 onChanged: _filterItems,
               )
             : SelectableText(
                 context.loc.iptv_channels_count(filteredItems.length),
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: AppTypography.body1SemiBold,
               ),
         actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: AppButton(
+              text: 'Pro',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const BrowseContentScreen()),
+                );
+              },
+              style: AppButtonStyleEnum.accentGradient,
+            ),
+          ),
           IconButton(
             icon: Icon(isSearching ? Icons.close : Icons.search),
             onPressed: () {
@@ -123,10 +136,7 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
                           itemCount: _getUniqueGroups().length + 1,
                           itemBuilder: (context, index) {
                             if (index == 0) {
-                              return _buildFilterChip(
-                                context.loc.see_all,
-                                null,
-                              );
+                              return _buildFilterChip(context.loc.see_all, null);
                             }
                             final group = _getUniqueGroups()[index - 1];
                             return _buildFilterChip(group, group);
@@ -153,16 +163,14 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
                 final channel = filteredItems[index];
 
                 return Container(
-                  height: 80,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
+                  height: 60,
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: AppSpacing.borderRadiusXl,
+                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
                     boxShadow: [
                       BoxShadow(
-                        color: AppPalette.neutral600Of(context).withValues(alpha: 0.1),
+                        color: AppPalette.neutral500Of(context),
                         spreadRadius: 1,
                         blurRadius: 2,
                         offset: const Offset(0, 1),
@@ -177,7 +185,7 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
                       child: Row(
                         children: [
                           _buildSimpleLogo(channel),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 2),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,10 +193,7 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
                               children: [
                                 Text(
                                   channel.name ?? context.loc.unknown_channel,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
+                                  style: AppTypography.body2SemiBold,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -196,9 +201,8 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
                                   const SizedBox(height: 2),
                                   Text(
                                     channel.groupTitle!,
-                                    style: TextStyle(
-                                      color: AppPalette.neutral600Of(context),
-                                      fontSize: 12,
+                                    style: AppTypography.body3Regular.copyWith(
+                                      color: AppPalette.neutral800Of(context),
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -208,22 +212,16 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
-                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: _getContentTypeColor(
-                                channel,
-                              ).withValues(alpha: 0.1),
+                              color: _getContentTypeColor(channel).withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               _getContentTypeText(channel),
-                              style: TextStyle(
+                              style: AppTypography.body3SemiBold.copyWith(
                                 fontSize: 10,
                                 color: _getContentTypeColor(channel),
-                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -277,8 +275,7 @@ class _M3uItemsScreenState extends State<M3uItemsScreen> {
             width: 50,
             height: 35,
             fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) =>
-                _buildPlaceholderIcon(),
+            errorBuilder: (context, error, stackTrace) => _buildPlaceholderIcon(),
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return _buildPlaceholderIcon();

@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/screens/m3u/new_m3u_playlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/core/style/app_colors.dart';
@@ -14,7 +15,7 @@ class PlaylistTypeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           context.loc.create_new_playlist,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: AppTypography.headline4,
         ),
         elevation: 0,
       ),
@@ -32,26 +33,22 @@ class PlaylistTypeScreen extends StatelessWidget {
                       SizedBox(height: AppSpacing.lg),
                       Text(
                         context.loc.select_playlist_type,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: AppTypography.headline1.copyWith(fontSize: 28),
                       ),
                       SizedBox(height: AppSpacing.sm),
                       Text(
                         context.loc.select_playlist_message,
-                        style: TextStyle(
-                          fontSize: 16,
+                        style: AppTypography.body1Regular.copyWith(
                           color: AppPalette.neutral700Of(context),
                         ),
                       ),
                       SizedBox(height: AppSpacing.xxl),
                       _buildPlaylistTypeCard(
                         context,
-                        title: 'Xtream Codes',
+                        title: context.loc.xtream_codes,
                         subtitle: context.loc.xtream_code_title,
                         description: context.loc.xtream_code_description,
-                        icon: Icons.stream_rounded,
+                        icon: Icons.stream_sharp,
                         gradientColors: [AppColors.primary, AppColors.infoBlue],
                         onTap: () {
                           Navigator.push(
@@ -66,11 +63,11 @@ class PlaylistTypeScreen extends StatelessWidget {
                       SizedBox(height: AppSpacing.lg),
                       _buildPlaylistTypeCard(
                         context,
-                        title: 'M3U Playlist',
+                        title: context.loc.m3u_playlist_type,
                         subtitle: context.loc.m3u_playlist_title,
                         description: context.loc.m3u_playlist_description,
                         icon: Icons.playlist_play_rounded,
-                        gradientColors: [AppColors.successGreen, AppColors.successIRNew],
+                        gradientColors: AppColors.accentGradientList,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -86,8 +83,12 @@ class PlaylistTypeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              AppPalette.primaryLightOf(context).withValues(alpha: 0.15),
-                              AppPalette.primaryLightOf(context).withValues(alpha: 0.05),
+                              AppPalette.primaryLightOf(
+                                context,
+                              ).withValues(alpha: 0.15),
+                              AppPalette.primaryLightOf(
+                                context,
+                              ).withValues(alpha: 0.05),
                             ],
                           ),
                           borderRadius: AppSpacing.borderRadiusLg,
@@ -97,15 +98,16 @@ class PlaylistTypeScreen extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.info_outline_rounded, color: AppColors.primary),
+                            Icon(
+                              Icons.info_outline_rounded,
+                              color: AppColors.primary,
+                            ),
                             SizedBox(width: AppSpacing.md),
                             Expanded(
                               child: Text(
                                 context.loc.select_playlist_type_footer,
-                                style: TextStyle(
+                                style: AppTypography.body2Medium.copyWith(
                                   color: AppColors.primary,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
@@ -134,12 +136,12 @@ class PlaylistTypeScreen extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Card(
-      elevation: AppSpacing.elevationMd,
-      shadowColor: gradientColors[0].withValues(alpha: 0.3),
-      shape: RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusXl),
+      elevation: AppSpacing.elevationLg,
+      shadowColor: gradientColors[0].withValues(alpha: 0.5),
+      shape: RoundedRectangleBorder(borderRadius: AppSpacing.borderRadiusXxl),
       child: InkWell(
         onTap: onTap,
-        borderRadius: AppSpacing.borderRadiusXl,
+        borderRadius: AppSpacing.borderRadiusXxl,
         child: Container(
           padding: EdgeInsets.all(AppSpacing.xl),
           child: Row(
@@ -171,29 +173,24 @@ class PlaylistTypeScreen extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTypography.headline3.copyWith(fontSize: 20),
                     ),
                     SizedBox(height: AppSpacing.xs),
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                      style: AppTypography.body2SemiBold.copyWith(
                         color: gradientColors[0],
                       ),
                     ),
                     SizedBox(height: AppSpacing.sm),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        fontSize: 13,
-                        height: 1.3,
-                        color: AppPalette.neutral700Of(context),
-                      ),
-                    ),
+                    // Text(
+                    //   description,
+                    //   style: TextStyle(
+                    //     fontSize: 13,
+                    //     height: 1.3,
+                    //     color: AppPalette.neutral700Of(context),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

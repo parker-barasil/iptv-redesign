@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
 import 'package:another_iptv_player/utils/get_playlist_type.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
 import 'package:another_iptv_player/services/app_state.dart';
@@ -8,11 +9,12 @@ import 'package:another_iptv_player/core/style/app_colors.dart';
 import '../../../models/content_type.dart';
 import '../../../services/event_bus.dart';
 import '../../../utils/responsive_helper.dart';
-import '../../../widgets/content_item_card_widget.dart';
+import '../../../widgets/content_card.dart';
 import '../../../widgets/loading_widget.dart';
 import '../../../widgets/player_widget.dart';
 import '../../../controllers/favorites_controller.dart';
 import '../../../models/favorite.dart';
+import '../../utils/toast_utils.dart';
 
 class LiveStreamScreen extends StatefulWidget {
   final ContentItem content;
@@ -111,13 +113,12 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
       setState(() {
         _isFavorite = result;
       });
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
-          ),
-        ),
+
+      ToastUtils.showSuccess(
+        context,
+        result
+            ? context.loc.added_to_favorites
+            : context.loc.removed_from_favorites,
       );
     }
   }
@@ -125,141 +126,146 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
   @override
   Widget build(BuildContext context) {
     if (!allContentsLoaded) {
-      return Scaffold(body: SafeArea(child: buildFullScreenLoadingWidget()));
+      return Scaffold(body: SafeArea(child: buildFullScreenLoadingWidget(context)));
     }
 
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
+      appBar: isLandscape ? null : AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(context.loc.live),
+        actions: [
+          IconButton(
+            onPressed: _toggleFavorite,
+            icon: Icon(
+              _isFavorite
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
+              color: _isFavorite ? AppColors.errorPink : null,
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            PlayerWidget(contentItem: widget.content, queue: allContents),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.errorPink,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 8,
-                                  height: 8,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                                const SizedBox(width: 6),
-                                SelectableText(
-                                  context.loc.live.toUpperCase(),
-                                  style: TextStyle(
-                                    color: AppColors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: SelectableText(
-                              contentItem.name,
-                              style: Theme.of(context).textTheme.headlineSmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: _toggleFavorite,
-                            icon: Icon(
-                              _isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                              color: _isFavorite ? AppColors.errorPink : AppColors.neutral600,
-                              size: 28,
-                            ),
-                          ),
-                        ],
+            Flexible(
+              flex: isLandscape ? 1 : 0,
+              child: PlayerWidget(
+                contentItem: widget.content,
+                queue: allContents,
+              ),
+            ),
+            if (!isLandscape)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      SelectableText(
+                        contentItem.name,
+                        style: AppTypography.headline2.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 24),
                       SelectableText(
                         context.loc.other_channels,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        style: AppTypography.headline4.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 16),
 
-                      ContentItemCardWidget(
-                        cardHeight: ResponsiveHelper.getCardHeight(context),
-                        cardWidth: ResponsiveHelper.getCardWidth(context),
-                        contentItems: allContents,
-                        onContentTap: _onContentTap,
-                        initialSelectedIndex: selectedContentItemIndex,
-                        isSelectionModeEnabled: true,
-                      ),
+                      ...allContents.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final content = entry.value;
+                        final isSelected = selectedContentItemIndex == index;
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.primary.withValues(
+                                        alpha: 0.4,
+                                      ),
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                height: 140,
+                                child: ContentCard(
+                                  content: content,
+                                  width: constraints.maxWidth,
+                                  isSelected: isSelected,
+                                  onTap: () => _onContentTap(content),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }).toList(),
                       const SizedBox(height: 24),
 
-                      SelectableText(
-                        context.loc.channel_information,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
+                      // SelectableText(
+                      //   context.loc.channel_information,
+                      //   style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 16),
 
-                      _buildInfoCard(
-                        icon: Icons.tv_rounded,
-                        title: context.loc.channel_id,
-                        value: contentItem.id.toString(),
-                        color: AppColors.infoBlue,
-                      ),
-                      const SizedBox(height: 12),
+                      // _buildInfoCard(
+                      //   icon: Icons.tv_rounded,
+                      //   title: context.loc.channel_id,
+                      //   value: contentItem.id.toString(),
+                      //   color: AppColors.infoBlue,
+                      // ),
+                      // const SizedBox(height: 12),
 
-                      _buildInfoCard(
-                        icon: Icons.category_rounded,
-                        title: context.loc.category_id,
-                        value:
-                            contentItem.liveStream?.categoryId ??
-                            context.loc.not_found_in_category,
-                        color: AppColors.successGreen,
-                      ),
-                      const SizedBox(height: 12),
+                      // _buildInfoCard(
+                      //   icon: Icons.category_rounded,
+                      //   title: context.loc.category_id,
+                      //   value:
+                      //       contentItem.liveStream?.categoryId ??
+                      //       context.loc.not_found_in_category,
+                      //   color: AppColors.successGreen,
+                      // ),
+                      // const SizedBox(height: 12),
 
-                      _buildInfoCard(
-                        icon: Icons.high_quality_rounded,
-                        title: context.loc.quality,
-                        value: _getQualityText(),
-                        color: AppColors.warningOrange,
-                      ),
-                      const SizedBox(height: 12),
+                      // _buildInfoCard(
+                      //   icon: Icons.high_quality_rounded,
+                      //   title: context.loc.quality,
+                      //   value: _getQualityText(),
+                      //   color: AppColors.warningOrange,
+                      // ),
+                      // const SizedBox(height: 12),
 
-                      _buildInfoCard(
-                        icon: Icons.signal_cellular_alt_rounded,
-                        title: context.loc.stream_type,
-                        value:
-                            contentItem.containerExtension?.toUpperCase() ??
-                            context.loc.live,
-                        color: AppColors.primary,
-                      ),
-                      const SizedBox(height: 24),
-                    ],
+                      // _buildInfoCard(
+                      //   icon: Icons.signal_cellular_alt_rounded,
+                      //   title: context.loc.stream_type,
+                      //   value:
+                      //       contentItem.containerExtension?.toUpperCase() ??
+                      //       context.loc.live,
+                      //   color: AppColors.primary,
+                      // ),
+                      // const SizedBox(height: 24),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),
@@ -277,7 +283,10 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
       decoration: BoxDecoration(
         color: AppColors.neutral500.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.neutral600.withOpacity(0.3), width: 1),
+        border: Border.all(
+          color: AppColors.neutral600.withOpacity(0.3),
+          width: 2,
+        ),
       ),
       child: Row(
         children: [
@@ -296,10 +305,8 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
               children: [
                 SelectableText(
                   title,
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: AppTypography.body3Medium.copyWith(
                     color: AppColors.neutral600,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 4),

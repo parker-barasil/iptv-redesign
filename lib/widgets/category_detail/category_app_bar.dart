@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class CategoryAppBar extends StatelessWidget {
@@ -28,7 +29,7 @@ class CategoryAppBar extends StatelessWidget {
       snap: true,
       title: isSearching ? _buildSearchField(context) : SelectableText(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: AppTypography.body1SemiBold,
       ),
       actions: [
         if (onSortPressed != null)

@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/screens/xtream-codes/xtream_code_data_loader_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class NewXtreamCodePlaylistScreen extends StatefulWidget {
 class NewXtreamCodePlaylistScreenState
     extends State<NewXtreamCodePlaylistScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController(text: 'Playlist-1');
+  final _nameController = TextEditingController();
   final _urlController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -36,6 +37,14 @@ class NewXtreamCodePlaylistScreenState
     _urlController.addListener(_validateForm);
     _usernameController.addListener(_validateForm);
     _passwordController.addListener(_validateForm);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_nameController.text.isEmpty) {
+      _nameController.text = context.loc.default_xtream_code_playlist_name;
+    }
   }
 
   @override
@@ -63,7 +72,7 @@ class NewXtreamCodePlaylistScreenState
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: Text('XStream Playlist')),
+      appBar: AppBar(title: Text(context.loc.xstream_playlist)),
       body: Consumer<PlaylistController>(
         builder: (context, controller, child) {
           return SingleChildScrollView(
@@ -88,8 +97,8 @@ class NewXtreamCodePlaylistScreenState
                     SizedBox(height: 20),
                     _buildErrorCard(controller.error!, colorScheme),
                   ],
-                  SizedBox(height: 20),
-                  _buildInfoCard(colorScheme),
+                  // SizedBox(height: 20),
+                  // _buildInfoCard(colorScheme),
                 ],
               ),
             ),
@@ -110,22 +119,24 @@ class NewXtreamCodePlaylistScreenState
             color: colorScheme.primary,
             borderRadius: BorderRadius.circular(30),
           ),
-          child: Icon(Icons.stream_rounded, size: 30, color: colorScheme.onPrimary),
+          child: Icon(
+            Icons.stream_rounded,
+            size: 30,
+            color: colorScheme.onPrimary,
+          ),
         ),
         SizedBox(height: 16),
         Text(
-          'XStream Code Playlist',
-          style: TextStyle(
+          context.loc.xstream_playlist,
+          style: AppTypography.headline2.copyWith(
             fontSize: 26,
-            fontWeight: FontWeight.bold,
             color: colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8),
         Text(
           context.loc.xtream_code_description,
-          style: TextStyle(
-            fontSize: 16,
+          style: AppTypography.body1Regular.copyWith(
             color: colorScheme.onSurface.withOpacity(0.7),
           ),
         ),
@@ -139,9 +150,7 @@ class NewXtreamCodePlaylistScreenState
       children: [
         Text(
           context.loc.playlist_name,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: AppTypography.body1SemiBold.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -150,7 +159,10 @@ class NewXtreamCodePlaylistScreenState
           controller: _nameController,
           decoration: InputDecoration(
             hintText: context.loc.playlist_name_placeholder,
-            prefixIcon: Icon(Icons.playlist_add_rounded, color: colorScheme.primary),
+            prefixIcon: Icon(
+              Icons.playlist_add_rounded,
+              color: colorScheme.primary,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: colorScheme.outline),
@@ -182,9 +194,7 @@ class NewXtreamCodePlaylistScreenState
       children: [
         Text(
           context.loc.api_url,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: AppTypography.body1SemiBold.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -193,7 +203,7 @@ class NewXtreamCodePlaylistScreenState
           controller: _urlController,
           keyboardType: TextInputType.url,
           decoration: InputDecoration(
-            hintText: 'http://example.com:8080',
+            hintText: context.loc.api_url_example_hint,
             prefixIcon: Icon(Icons.link_rounded, color: colorScheme.primary),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -233,9 +243,7 @@ class NewXtreamCodePlaylistScreenState
       children: [
         Text(
           context.loc.username,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: AppTypography.body1SemiBold.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -276,9 +284,7 @@ class NewXtreamCodePlaylistScreenState
       children: [
         Text(
           context.loc.password,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: AppTypography.body1SemiBold.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -291,7 +297,9 @@ class NewXtreamCodePlaylistScreenState
             prefixIcon: Icon(Icons.lock_rounded, color: colorScheme.primary),
             suffixIcon: IconButton(
               icon: Icon(
-                _obscurePassword ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                _obscurePassword
+                    ? Icons.visibility_rounded
+                    : Icons.visibility_off_rounded,
                 color: colorScheme.onSurface.withOpacity(0.6),
               ),
               onPressed: () {
@@ -361,17 +369,15 @@ class NewXtreamCodePlaylistScreenState
               children: [
                 Text(
                   context.loc.error_occurred,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  style: AppTypography.body1SemiBold.copyWith(
                     color: colorScheme.onErrorContainer,
                   ),
                 ),
                 SizedBox(height: 4),
                 Text(
                   error,
-                  style: TextStyle(
+                  style: AppTypography.body2Regular.copyWith(
                     color: colorScheme.onErrorContainer,
-                    fontSize: 14,
                   ),
                 ),
               ],
@@ -395,12 +401,15 @@ class NewXtreamCodePlaylistScreenState
         children: [
           Row(
             children: [
-              Icon(Icons.info_outline_rounded, color: colorScheme.primary, size: 20),
+              Icon(
+                Icons.info_outline_rounded,
+                color: colorScheme.primary,
+                size: 20,
+              ),
               SizedBox(width: 8),
               Text(
                 context.loc.info,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: AppTypography.body1SemiBold.copyWith(
                   color: colorScheme.onPrimaryContainer,
                 ),
               ),
@@ -409,9 +418,8 @@ class NewXtreamCodePlaylistScreenState
           SizedBox(height: 8),
           Text(
             '${context.loc.all_datas_are_stored_in_device}\n${context.loc.url_format_validate_message}',
-            style: TextStyle(
+            style: AppTypography.body3Regular.copyWith(
               color: colorScheme.onPrimaryContainer,
-              fontSize: 13,
               height: 1.4,
             ),
           ),

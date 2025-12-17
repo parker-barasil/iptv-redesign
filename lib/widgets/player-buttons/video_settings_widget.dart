@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/core/style/app_colors.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/services/event_bus.dart';
 import 'package:another_iptv_player/services/player_state.dart';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
@@ -74,46 +75,48 @@ class _VideoSettingsWidgetState extends State<VideoSettingsWidget> {
       builder: (BuildContext context) {
         return Container(
           padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).dividerColor,
-                    borderRadius: BorderRadius.circular(2),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).dividerColor,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                context.loc.settings,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              _buildSettingsItem(
-                icon: Icons.video_settings,
-                title: context.loc.video_track,
-                subtitle: selectedVideoTrack,
-                onTap: () => _showVideoTrackSelection(context),
-              ),
-              _buildSettingsItem(
-                icon: Icons.audiotrack,
-                title: context.loc.audio_track,
-                subtitle: selectedAudioTrack,
-                onTap: () => _showAudioTrackSelection(context),
-              ),
-              _buildSettingsItem(
-                icon: Icons.subtitles,
-                title: context.loc.subtitle_track,
-                subtitle: selectedSubtitleTrack,
-                onTap: () => _showSubtitleTrackSelection(context),
-              ),
-              SizedBox(height: 20),
-            ],
+                SizedBox(height: 20),
+                Text(
+                  context.loc.settings,
+                  style: AppTypography.headline2,
+                ),
+                SizedBox(height: 20),
+                _buildSettingsItem(
+                  icon: Icons.video_settings,
+                  title: context.loc.video_track,
+                  subtitle: selectedVideoTrack,
+                  onTap: () => _showVideoTrackSelection(context),
+                ),
+                _buildSettingsItem(
+                  icon: Icons.audiotrack,
+                  title: context.loc.audio_track,
+                  subtitle: selectedAudioTrack,
+                  onTap: () => _showAudioTrackSelection(context),
+                ),
+                _buildSettingsItem(
+                  icon: Icons.subtitles,
+                  title: context.loc.subtitle_track,
+                  subtitle: selectedSubtitleTrack,
+                  onTap: () => _showSubtitleTrackSelection(context),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
           ),
         );
       },
@@ -128,8 +131,8 @@ class _VideoSettingsWidgetState extends State<VideoSettingsWidget> {
   }) {
     return ListTile(
       leading: Icon(icon, color: AppColors.primary),
-      title: Text(title),
-      subtitle: Text(subtitle),
+      title: Text(title, style: AppTypography.body1Regular),
+      subtitle: Text(subtitle, style: AppTypography.body2Regular),
       trailing: Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,
     );
@@ -176,18 +179,18 @@ class _VideoSettingsWidgetState extends State<VideoSettingsWidget> {
                   ),
                   Text(
                     context.loc.quality,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: AppTypography.headline2,
                   ),
                 ],
               ),
               SizedBox(height: 10),
-              Flexible(
+              Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: videoTracks
                         .map(
                           (track) => ListTile(
-                            title: Text(track.id),
+                            title: Text(track.id, style: AppTypography.body1Regular),
                             trailing: selectedVideoTrack == track.id
                                 ? Icon(Icons.check_rounded, color: AppColors.primary)
                                 : null,
@@ -256,20 +259,20 @@ class _VideoSettingsWidgetState extends State<VideoSettingsWidget> {
                   ),
                   Text(
                     context.loc.audio_track,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: AppTypography.headline2,
                   ),
                 ],
               ),
               SizedBox(height: 10),
-              Flexible(
+              Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: audioTracks
                         .map(
                           (track) => ListTile(
-                            title: Text(track.language ?? 'NULL'),
+                            title: Text(track.language ?? context.loc.no_audio_track, style: AppTypography.body1Regular),
                             trailing:
-                                selectedAudioTrack == (track.language ?? 'NULL')
+                                selectedAudioTrack == (track.language ?? context.loc.no_audio_track)
                                 ? Icon(Icons.check_rounded, color: AppColors.primary)
                                 : null,
                             onTap: () {
@@ -277,7 +280,7 @@ class _VideoSettingsWidgetState extends State<VideoSettingsWidget> {
 
                               if (mounted) {
                                 setState(() {
-                                  selectedAudioTrack = track.language ?? 'NULL';
+                                  selectedAudioTrack = track.language ?? context.loc.no_audio_track;
                                 });
                               }
                               Navigator.pop(context);
@@ -337,21 +340,21 @@ class _VideoSettingsWidgetState extends State<VideoSettingsWidget> {
                   ),
                   Text(
                     context.loc.subtitle_track,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: AppTypography.headline2,
                   ),
                 ],
               ),
               SizedBox(height: 10),
-              Flexible(
+              Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: subtitleTracks
                         .map(
                           (track) => ListTile(
-                            title: Text(track.language ?? 'NULL'),
+                            title: Text(track.language ?? context.loc.no_subtitle_track, style: AppTypography.body1Regular),
                             trailing:
                                 selectedSubtitleTrack ==
-                                    (track.language ?? 'NULL')
+                                    (track.language ?? context.loc.no_subtitle_track)
                                 ? Icon(Icons.check_rounded, color: AppColors.primary)
                                 : null,
                             onTap: () {
@@ -360,7 +363,7 @@ class _VideoSettingsWidgetState extends State<VideoSettingsWidget> {
                               if (mounted) {
                                 setState(() {
                                   selectedSubtitleTrack =
-                                      track.language ?? 'NULL';
+                                      track.language ?? context.loc.no_subtitle_track;
                                 });
                               }
                               Navigator.pop(context);

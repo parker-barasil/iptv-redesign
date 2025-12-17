@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:another_iptv_player/l10n/localization_extension.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
 import 'package:another_iptv_player/models/watch_history.dart';
 import 'package:another_iptv_player/repositories/user_preferences.dart';
@@ -9,6 +10,7 @@ import 'package:another_iptv_player/utils/get_playlist_type.dart';
 import 'package:another_iptv_player/utils/subtitle_configuration.dart';
 import 'package:another_iptv_player/widgets/video_widget.dart';
 import 'package:another_iptv_player/core/style/app_colors.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ import '../../services/player_state.dart';
 import '../../services/service_locator.dart';
 import '../../utils/audio_handler.dart';
 import '../utils/player_error_handler.dart';
+import '../utils/toast_utils.dart';
 
 class PlayerWidget extends StatefulWidget {
   final ContentItem contentItem;
@@ -143,7 +146,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
             title: item.name,
             artist: _getContentTypeDisplayName(),
             album: AppState.currentPlaylist?.name ?? '',
-            artUri: item.imagePath != null ? Uri.parse(item.imagePath!) : null,
+            artUri: item.imagePath.isNotEmpty ? Uri.parse(item.imagePath) : null,
             playable: true,
             extras: {
               'url': item.url,
@@ -166,8 +169,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
                 title: item.name,
                 artist: _getContentTypeDisplayName(),
                 album: AppState.currentPlaylist?.name ?? '',
-                artUri: item.imagePath != null
-                    ? Uri.parse(item.imagePath!)
+                artUri: item.imagePath.isNotEmpty
+                    ? Uri.parse(item.imagePath)
                     : null,
                 playable: true,
                 extras: {'url': item.url, 'startPosition': 0},
@@ -201,8 +204,8 @@ class _PlayerWidgetState extends State<PlayerWidget>
         id: contentItem.id.toString(),
         title: contentItem.name,
         artist: _getContentTypeDisplayName(),
-        artUri: contentItem.imagePath != null
-            ? Uri.parse(contentItem.imagePath!)
+        artUri: contentItem.imagePath.isNotEmpty
+            ? Uri.parse(contentItem.imagePath)
             : null,
         extras: {
           'url': contentItem.url,
@@ -253,16 +256,11 @@ class _PlayerWidgetState extends State<PlayerWidget>
             contentItem.contentType == ContentType.liveStream &&
             contentItem.url.isNotEmpty) {
           try {
-            ScaffoldMessenger.of(context).clearSnackBars();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Online", style: TextStyle(color: AppColors.white)),
-                backgroundColor: AppColors.successGreen,
-              ),
-            );
-
             // TODO: Implement watch history duration for vod and series
             await _player.open(Media(contentItem.url));
+            if (mounted) {
+              ToastUtils.showSuccess(context, context.loc.connected);
+            }
           } catch (e) {
             print('Error opening media: $e');
           }
@@ -270,15 +268,9 @@ class _PlayerWidgetState extends State<PlayerWidget>
         _wasDisconnected = false;
       } else {
         _wasDisconnected = true;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "No Connection",
-              style: TextStyle(color: AppColors.white),
-            ),
-            backgroundColor: AppColors.errorPink,
-          ),
-        );
+        if (mounted) {
+          ToastUtils.showError(context, context.loc.no_connection);
+        }
       }
     });
 
@@ -328,11 +320,6 @@ class _PlayerWidgetState extends State<PlayerWidget>
     });
 
     _player.stream.position.listen((position) async {
-      _player.state.playlist.medias[currentItemIndex] = Media(
-        contentItem.url,
-        start: position,
-      );
-
       await watchHistoryService.saveWatchHistory(
         WatchHistory(
           playlistId: AppState.currentPlaylist!.id,
@@ -361,12 +348,9 @@ class _PlayerWidgetState extends State<PlayerWidget>
             }
           },
           (errorMessage) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(errorMessage),
-                duration: Duration(seconds: 3),
-              ),
-            );
+            if (mounted) {
+              ToastUtils.showError(context, errorMessage);
+            }
           },
         );
       }
@@ -487,7 +471,17 @@ class _PlayerWidgetState extends State<PlayerWidget>
 
     return Container(
       color: AppColors.neutralDark900,
-      child: Column(children: [playerWidget]),
+      child: ClipRect(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              fit: FlexFit.loose,
+              child: playerWidget,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -503,7 +497,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 errorMessage,
-                style: const TextStyle(color: AppColors.white, fontSize: 12),
+                style: AppTypography.body3Regular.copyWith(color: AppColors.white),
                 textAlign: TextAlign.center,
               ),
             ),

@@ -92,7 +92,7 @@ class M3UHomeController extends ChangeNotifier {
       case 5:
         return context.loc.settings;
       default:
-        return 'Another IPTV Player';
+        return 'Ventro IPTV';
     }
   }
 
@@ -191,7 +191,7 @@ class M3UHomeController extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      _errorMessage = 'Kategoriler yüklenemedi: $e';
+      _errorMessage = e.toString();
       _setViewState(ViewState.error);
       _isLoading = false;
     }

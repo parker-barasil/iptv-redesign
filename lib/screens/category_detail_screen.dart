@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:another_iptv_player/models/category_view_model.dart';
@@ -97,7 +98,7 @@ class _CategoryDetailViewState extends State<_CategoryDetailView> {
       child: Row(
         children: [
           ChoiceChip(
-            label: Text(context.loc.all),
+            label: Text(context.loc.all, style: AppTypography.body2Regular),
             selected: controller.selectedGenre == null,
             onSelected: (_) => controller.filterByGenre(null),
           ),
@@ -105,7 +106,7 @@ class _CategoryDetailViewState extends State<_CategoryDetailView> {
                 (g) => Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
               child: ChoiceChip(
-                label: Text(_capitalizeGenre(g)),
+                label: Text(_capitalizeGenre(g), style: AppTypography.body2Regular),
                 selected: controller.selectedGenre == g,
                 onSelected: (_) => controller.filterByGenre(g),
               ),
@@ -125,14 +126,14 @@ class _CategoryDetailViewState extends State<_CategoryDetailView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text('A → Z'),
+                title: Text(context.loc.sort_a_to_z, style: AppTypography.body1Regular),
                 onTap: () {
                   controller.sortItems("ascending");
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: const Text('Z → A'),
+                title: Text(context.loc.sort_z_to_a, style: AppTypography.body1Regular),
                 onTap: () {
                   controller.sortItems("descending");
                   Navigator.pop(context);
@@ -140,7 +141,7 @@ class _CategoryDetailViewState extends State<_CategoryDetailView> {
               ),
               ListTile(
                 leading: const Icon(Icons.event),
-                title: Text(context.loc.release_date),
+                title: Text(context.loc.release_date, style: AppTypography.body1Regular),
                 onTap: () {
                   controller.sortItems("release_date");
                   Navigator.pop(context);
@@ -148,7 +149,7 @@ class _CategoryDetailViewState extends State<_CategoryDetailView> {
               ),
               ListTile(
                 leading: const Icon(Icons.star_rate),
-                title: Text(context.loc.rating),
+                title: Text(context.loc.rating, style: AppTypography.body1Regular),
                 onTap: () {
                   controller.sortItems("rating");
                   Navigator.pop(context);

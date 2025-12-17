@@ -1,14 +1,15 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/models/watch_history.dart';
+import 'package:another_iptv_player/screen.dart';
 import 'package:another_iptv_player/widgets/watch_history/watch_history_app_bar_widget.dart';
+import 'package:another_iptv_player/widgets/content_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:another_iptv_player/utils/responsive_helper.dart';
 import '../../controllers/watch_history_controller.dart';
 import '../../controllers/favorites_controller.dart';
 import '../../models/favorite.dart';
-import 'watch_history_section.dart';
-import 'favorites_section.dart';
+import '../../models/playlist_content_model.dart';
 
 class WatchHistoryContent extends StatelessWidget {
   final Function(dynamic) onHistoryTap;
@@ -30,8 +31,8 @@ class WatchHistoryContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<WatchHistoryController>(
       builder: (context, controller, child) {
-        final cardWidth = ResponsiveHelper.getCardWidth(context);
-        final cardHeight = ResponsiveHelper.getCardHeight(context);
+        final allHistories = controller.allHistory;
+        final subtleColor = Theme.of(context).colorScheme.onSurfaceVariant;
 
         return NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -46,60 +47,60 @@ class WatchHistoryContent extends StatelessWidget {
               ),
             ];
           },
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Consumer<FavoritesController>(
-                  builder: (context, favoritesController, child) {
-                    return FavoritesSection(
-                      favorites: favoritesController.favorites,
-                      cardWidth: cardWidth,
-                      cardHeight: cardHeight,
-                      onSeeAllTap: onSeeAllFavorites,
-                      onFavoriteRemove: onFavoriteRemove,
-                    );
-                  },
-                ),
-                WatchHistorySection(
-                  title: context.loc.live_streams,
-                  histories: controller.liveHistory,
-                  cardWidth: cardWidth,
-                  cardHeight: cardHeight,
-                  onHistoryTap: onHistoryTap,
-                  onHistoryRemove: onHistoryRemove,
-                  onSeeAllTap: () => onSeeAllTap(
-                    context.loc.live_streams,
-                    controller.liveHistory,
+          body: allHistories.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => BrowseContentScreen()),
+                        ),
+                        child: Icon(Icons.history, size: 64, color: subtleColor),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        context.loc.history,
+                        style: AppTypography.headline3.copyWith(color: subtleColor),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        context.loc.history_empty_message,
+                        style: AppTypography.body2Regular.copyWith(color: subtleColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                )
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: allHistories.map((history) {
+                      return GestureDetector(
+                        onLongPress: () => onHistoryRemove(history),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return ContentCard(
+                                content: ContentItem(
+                                  history.streamId,
+                                  history.title,
+                                  history.imagePath ?? '',
+                                  history.contentType,
+                                ),
+                                width: constraints.maxWidth,
+                                onTap: () => onHistoryTap(history),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
-                WatchHistorySection(
-                  title: context.loc.movies,
-                  histories: controller.movieHistory,
-                  cardWidth: cardWidth,
-                  cardHeight: cardHeight,
-                  showProgress: true,
-                  onHistoryTap: onHistoryTap,
-                  onHistoryRemove: onHistoryRemove,
-                  onSeeAllTap: () =>
-                      onSeeAllTap(context.loc.movies, controller.movieHistory),
-                ),
-                WatchHistorySection(
-                  title: context.loc.series_plural,
-                  histories: controller.seriesHistory,
-                  cardWidth: cardWidth,
-                  cardHeight: cardHeight,
-                  showProgress: true,
-                  onHistoryTap: onHistoryTap,
-                  onHistoryRemove: onHistoryRemove,
-                  onSeeAllTap: () => onSeeAllTap(
-                    context.loc.series_plural,
-                    controller.seriesHistory,
-                  ),
-                ),
-                const SizedBox(height: 32),
-              ],
-            ),
-          ),
         );
       },
     );

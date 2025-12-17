@@ -1,4 +1,6 @@
+import 'dart:ui';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,12 +10,14 @@ import 'package:another_iptv_player/models/category_view_model.dart';
 import 'package:another_iptv_player/models/playlist_model.dart';
 import 'package:another_iptv_player/repositories/iptv_repository.dart';
 import 'package:another_iptv_player/screens/category_detail_screen.dart';
-import 'package:another_iptv_player/screens/xtream-codes/xtream_code_playlist_settings_screen.dart';
 import 'package:another_iptv_player/screens/watch_history_screen.dart';
+import 'package:another_iptv_player/screens/favorites_screen.dart';
+import 'package:another_iptv_player/screens/playlist_screen.dart';
 import 'package:another_iptv_player/services/app_state.dart';
 import 'package:another_iptv_player/utils/navigate_by_content_type.dart';
 import 'package:another_iptv_player/utils/responsive_helper.dart';
 import 'package:another_iptv_player/widgets/category_section.dart';
+import 'package:another_iptv_player/feature/premium/presentation/pages/browse_content_screen.dart';
 import '../../models/content_type.dart';
 
 class XtreamCodeHomeScreen extends StatefulWidget {
@@ -100,7 +104,7 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
           children: [
             const CircularProgressIndicator(),
             const SizedBox(height: 16),
-            Text(context.loc.loading_playlists),
+            Text(context.loc.loading_playlists, style: AppTypography.body1Regular),
           ],
         ),
       ),
@@ -113,6 +117,7 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
       ) {
     return Scaffold(
       body: _buildPageView(controller),
+      extendBody: true,
       bottomNavigationBar: _buildBottomNavigationBar(context, controller),
     );
   }
@@ -145,6 +150,10 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
         key: ValueKey('watch_history_${controller.currentIndex}'),
         playlistId: widget.playlist.id,
       ),
+      FavoritesScreen(
+        key: ValueKey('favorites_${controller.currentIndex}'),
+        playlistId: widget.playlist.id,
+      ),
       _buildContentPage(
         controller.liveCategories!,
         ContentType.liveStream,
@@ -160,7 +169,7 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
         ContentType.series,
         controller,
       ),
-      XtreamCodePlaylistSettingsScreen(playlist: widget.playlist),
+      PlaylistScreen(),
     ];
   }
 
@@ -193,9 +202,21 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
       ContentType contentType,
       ) {
     return SliverAppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.workspace_premium_rounded),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BrowseContentScreen(),
+            ),
+          );
+        },
+        tooltip: 'Premium',
+      ),
       title: SelectableText(
         _getDesktopTitle(context, contentType),
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: AppTypography.headline4,
       ),
       floating: true,
       snap: true,
@@ -226,9 +247,21 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
       ContentType contentType,
       ) {
     return SliverAppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.workspace_premium_rounded),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BrowseContentScreen(),
+            ),
+          );
+        },
+        tooltip: 'Premium',
+      ),
       title: SelectableText(
         controller.getPageTitle(context),
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: AppTypography.headline4,
       ),
       floating: true,
       snap: true,
@@ -285,15 +318,22 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
     );
   }
 
-  BottomNavigationBar _buildBottomNavigationBar(
+  Widget _buildBottomNavigationBar(
       BuildContext context,
       XtreamCodeHomeController controller,
       ) {
-    return BottomNavigationBar(
-      currentIndex: controller.currentIndex,
-      onTap: controller.onNavigationTap,
-      type: BottomNavigationBarType.fixed,
-      items: _buildBottomNavigationItems(context),
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: BottomNavigationBar(
+          currentIndex: controller.currentIndex,
+          onTap: controller.onNavigationTap,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
+          elevation: 0,
+          items: _buildBottomNavigationItems(context),
+        ),
+      ),
     );
   }
 
@@ -311,14 +351,19 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
       BoxConstraints constraints,
       ) {
     final navWidth = _getNavigationWidth(constraints.maxWidth);
-    return Container(
-      width: navWidth,
-      decoration: _getNavigationBarDecoration(context),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildDesktopNavigationItems(context, controller, constraints),
-        ],
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Container(
+          width: navWidth,
+          decoration: _getNavigationBarDecoration(context),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildDesktopNavigationItems(context, controller, constraints),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -365,7 +410,7 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
             color: isSelected
                 ? Theme.of(context).colorScheme.primaryContainer
                 : (_hoveredIndex == item.index
-                ? Colors.grey.withOpacity(0.2)
+                ? Theme.of(context).colorScheme.surfaceContainerHighest
                 : Colors.transparent),
           ),
           child: Column(
@@ -379,9 +424,8 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
               const SizedBox(height: 2),
               Text(
                 item.label,
-                style: TextStyle(
+                style: AppTypography.body3Regular.copyWith(
                   color: _getTextColor(context, isSelected),
-                  fontSize: sizes.fontSize,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
                 textAlign: TextAlign.center,
@@ -395,7 +439,7 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
 
   BoxDecoration _getNavigationBarDecoration(BuildContext context) {
     return BoxDecoration(
-      color: Theme.of(context).colorScheme.surface,
+      color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
       border: Border(
         right: BorderSide(color: Theme.of(context).dividerColor, width: 0.5),
       ),
@@ -432,21 +476,22 @@ class _XtreamCodeHomeScreenState extends State<XtreamCodeHomeScreen> {
   List<NavigationItem> _getNavigationItems(BuildContext context) {
     return [
       NavigationItem(icon: Icons.history, label: context.loc.history, index: 0),
-      NavigationItem(icon: Icons.live_tv, label: context.loc.live, index: 1),
+      NavigationItem(icon: Icons.favorite, label: context.loc.favorites, index: 1),
+      NavigationItem(icon: Icons.live_tv, label: context.loc.live, index: 2),
       NavigationItem(
         icon: Icons.movie_outlined,
         label: context.loc.movie,
-        index: 2,
+        index: 3,
       ),
       NavigationItem(
         icon: Icons.tv,
         label: context.loc.series_plural,
-        index: 3,
+        index: 4,
       ),
       NavigationItem(
-        icon: Icons.settings,
-        label: context.loc.settings,
-        index: 4,
+        icon: Icons.playlist_play,
+        label: context.loc.my_playlists,
+        index: 5,
       ),
     ];
   }

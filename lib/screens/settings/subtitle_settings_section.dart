@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/repositories/user_preferences.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
 import '../../widgets/color_picker_tile_widget.dart';
@@ -140,9 +141,7 @@ class _SubtitleSettingsScreenState extends State<SubtitleSettingsScreen> {
                   const SizedBox(width: 8),
                   Text(
                     context.loc.preview,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: AppTypography.body1SemiBold,
                   ),
                 ],
               ),
@@ -158,7 +157,7 @@ class _SubtitleSettingsScreenState extends State<SubtitleSettingsScreen> {
                   context.loc.sample_text,
                   textAlign: _textAlign,
                   textScaler: TextScaler.linear(.38),
-                  style: TextStyle(
+                  style: AppTypography.body1Regular.copyWith(
                     fontSize: _fontSize,
                     height: _height,
                     letterSpacing: _letterSpacing,

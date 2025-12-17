@@ -4,6 +4,7 @@ import '../../l10n/localization_extension.dart';
 import '../../models/playlist_content_model.dart';
 import '../../widgets/player_widget.dart';
 import '../../controllers/favorites_controller.dart';
+import '../../utils/toast_utils.dart';
 
 class M3uPlayerScreen extends StatefulWidget {
   final ContentItem contentItem;
@@ -50,12 +51,9 @@ class _M3uPlayerScreenState extends State<M3uPlayerScreen> {
         _isFavorite = result;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
-          ),
-        ),
+      ToastUtils.showSuccess(
+        context,
+        result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
       );
     }
   }

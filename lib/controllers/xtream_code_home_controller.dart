@@ -113,7 +113,7 @@ class XtreamCodeHomeController extends ChangeNotifier {
       case 4:
         return context.loc.settings;
       default:
-        return 'Another IPTV Player';
+        return 'Ventro IPTV';
     }
   }
 
@@ -243,7 +243,7 @@ class XtreamCodeHomeController extends ChangeNotifier {
       notifyListeners();
     } catch (e, st) {
       debugPrint(st.toString());
-      _errorMessage = 'Kategoriler yüklenemedi: $e';
+      _errorMessage = e.toString();
       _setViewState(ViewState.error);
     }
   }

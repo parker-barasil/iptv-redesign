@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/models/category_view_model.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
@@ -37,16 +38,14 @@ class CategorySection extends StatelessWidget {
                 Expanded(
                   child: SelectableText(
                     category.category.categoryName,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppTypography.headline4,
                   ),
                 ),
                 TextButton(
                   onPressed: onSeeAllTap,
                   child: Text(
                     context.loc.see_all,
-                    style: TextStyle(fontSize: 11),
+                    style: AppTypography.body3Medium.copyWith(fontSize: 11),
                   ),
                 ),
               ],

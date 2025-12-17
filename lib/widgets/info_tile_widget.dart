@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 
 class InfoTileWidget extends StatelessWidget {
   final IconData icon;
@@ -17,11 +18,11 @@ class InfoTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: Colors.grey[700]),
-      title: Text(label, style: const TextStyle(fontSize: 13)),
+      leading: Icon(icon, color: Theme.of(context).colorScheme.onSurfaceVariant),
+      title: Text(label, style: AppTypography.body3Regular),
       subtitle: Text(
         value,
-        style: TextStyle(color: valueColor),
+        style: AppTypography.body2Regular.copyWith(color: valueColor),
       ),
       dense: true,
     );

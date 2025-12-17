@@ -5,12 +5,13 @@ import 'package:another_iptv_player/services/app_state.dart';
 import '../models/playlist_model.dart';
 import '../screens/xtream-codes/xtream_code_home_screen.dart';
 import '../services/playlist_service.dart';
+import '../services/review_service.dart';
 
 class PlaylistController extends ChangeNotifier {
   List<Playlist> _playlists = [];
   bool _isLoading = false;
   String? _error;
-  bool _hasInitialized = false;
+  final bool _hasInitialized = false;
 
   List<Playlist> get playlists => List.unmodifiable(_playlists);
 
@@ -40,7 +41,7 @@ class PlaylistController extends ChangeNotifier {
       _playlists = await PlaylistService.getPlaylists();
       _sortPlaylists();
     } catch (e) {
-      setError('Playlistler yüklenemedi: ${e.toString()}');
+      setError('Failed to load playlists: ${e.toString()}');
     } finally {
       _setLoading(false);
     }
@@ -77,12 +78,13 @@ class PlaylistController extends ChangeNotifier {
     String? username,
     String? password,
   }) async {
+    _clearError(); // Clear previous errors before validation
+
     if (!_validateInput(name, type, url, username, password)) {
       return null;
     }
 
     _setLoading(true);
-    _clearError();
 
     try {
       final playlist = Playlist(
@@ -99,9 +101,12 @@ class PlaylistController extends ChangeNotifier {
       _playlists.add(playlist);
       _sortPlaylists();
 
+      // Trigger review request after second playlist
+      await ReviewService().onPlaylistAdded();
+
       return playlist;
     } catch (e) {
-      setError('Playlist kaydedilemedi: ${e.toString()}');
+      setError('Failed to save playlist: ${e.toString()}');
       return null;
     } finally {
       _setLoading(false);
@@ -115,7 +120,7 @@ class PlaylistController extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      setError('Playlist silinemedi: ${e.toString()}');
+      setError('Failed to delete playlist: ${e.toString()}');
       return false;
     }
   }
@@ -132,7 +137,7 @@ class PlaylistController extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      setError('Playlistler silinemedi: ${e.toString()}');
+      setError('Failed to delete playlists: ${e.toString()}');
       return false;
     } finally {
       _setLoading(false);
@@ -145,7 +150,7 @@ class PlaylistController extends ChangeNotifier {
 
     try {
       if (_isDuplicateName(updatedPlaylist)) {
-        setError('Bu isimde bir playlist zaten mevcut');
+        setError('A playlist with this name already exists');
         return false;
       }
 
@@ -159,7 +164,7 @@ class PlaylistController extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      setError('Playlist güncellenemedi: ${e.toString()}');
+      setError('Failed to update playlist: ${e.toString()}');
       return false;
     } finally {
       _setLoading(false);
@@ -249,32 +254,27 @@ class PlaylistController extends ChangeNotifier {
     String? password,
   ) {
     if (name.trim().isEmpty || name.trim().length < 2) {
-      setError('Playlist adı en az 2 karakter olmalıdır');
-      return false;
-    }
-
-    if (_playlists.any((p) => p.name.toLowerCase() == name.toLowerCase())) {
-      setError('Bu isimde bir playlist zaten mevcut');
+      setError('Playlist name must be at least 2 characters');
       return false;
     }
 
     if (type == PlaylistType.xtream) {
       if (url?.trim().isEmpty ?? true) {
-        setError('URL gereklidir');
+        setError('URL is required');
         return false;
       }
       if (username?.trim().isEmpty ?? true) {
-        setError('Kullanıcı adı gereklidir');
+        setError('Username is required');
         return false;
       }
       if (password?.trim().isEmpty ?? true) {
-        setError('Şifre gereklidir');
+        setError('Password is required');
         return false;
       }
 
       final uri = Uri.tryParse(url!.trim());
       if (uri == null || !uri.hasScheme || !uri.hasAuthority) {
-        setError('Geçerli bir URL giriniz');
+        setError('Please enter a valid URL');
         return false;
       }
     }

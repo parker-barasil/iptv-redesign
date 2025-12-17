@@ -1,4 +1,5 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:another_iptv_player/core/style/app_colors.dart';
 import 'package:another_iptv_player/core/new_widgets/app_button.dart';
@@ -27,10 +28,13 @@ class ErrorState extends StatelessWidget {
         children: [
           Icon(Icons.error_outline_rounded, size: 64, color: AppColors.errorPink),
           const SizedBox(height: 16),
-          Text('Hata: $message', style: TextStyle(color: AppColors.errorPink)),
+          Text(
+            '${context.loc.error_occurred}: $message',
+            style: AppTypography.body1Regular.copyWith(color: AppColors.errorPink),
+          ),
           const SizedBox(height: 16),
           AppButton(
-            text: 'Tekrar Dene',
+            text: context.loc.try_again,
             icon: Icons.refresh_rounded,
             onPressed: onRetry,
             style: AppButtonStyleEnum.primaryGradient,
@@ -54,7 +58,7 @@ class EmptyState extends StatelessWidget {
           SizedBox(height: 16),
           Text(
             context.loc.not_found_in_category,
-            style: TextStyle(color: AppColors.neutral600),
+            style: AppTypography.body1Regular.copyWith(color: AppColors.neutral600),
           ),
         ],
       ),

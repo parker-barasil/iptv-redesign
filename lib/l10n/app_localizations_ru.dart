@@ -399,7 +399,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get connected => 'Подключён';
+  String get connected => 'Подключено';
 
   @override
   String get no_connection => 'Нет соединения';
@@ -694,4 +694,132 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get new_ep => 'новый';
+
+  @override
+  String get not_provided => 'Не предоставлено';
+
+  @override
+  String get unknown => 'Неизвестно';
+
+  @override
+  String get no_audio_track => 'Нет аудиодорожки';
+
+  @override
+  String get no_subtitle_track => 'Нет субтитров';
+
+  @override
+  String get repository_not_available => 'Репозиторий недоступен';
+
+  @override
+  String get no_favorites_yet => 'Пока нет избранного';
+
+  @override
+  String get series_not_found => 'Сериал не найден';
+
+  @override
+  String get sort_a_to_z => 'А → Я';
+
+  @override
+  String get sort_z_to_a => 'Я → А';
+
+  @override
+  String get xtream_codes => 'Xtream Codes';
+
+  @override
+  String get m3u_playlist_type => 'M3U Плейлист';
+
+  @override
+  String get xstream_playlist => 'XStream Плейлист';
+
+  @override
+  String get loading => 'Загрузка...';
+
+  @override
+  String error_message(Object message) {
+    return 'Ошибка: $message';
+  }
+
+  @override
+  String get live_broadcast => 'Прямой эфир';
+
+  @override
+  String get film => 'Фильм';
+
+  @override
+  String get series => 'Сериал';
+
+  @override
+  String get continue_watching => 'Продолжить';
+
+  @override
+  String get films => 'Фильмы';
+
+  @override
+  String get series_list => 'Сериалы';
+
+  @override
+  String get instructions_title => 'Как добавить плейлист в IPTV Smart Player';
+
+  @override
+  String get instruction_step_1_title => 'Найдите плейлист M3U';
+
+  @override
+  String get instruction_step_1_subtitle =>
+      'Поиск в интернете публично доступного плейлиста IPTV (M3U)';
+
+  @override
+  String get instruction_step_2_title => 'Скопируйте ссылку или загрузите';
+
+  @override
+  String get instruction_step_2_subtitle =>
+      'Скопируйте ссылку на плейлист или загрузите файл .m3u';
+
+  @override
+  String get instruction_step_3_title => 'Импортируйте плейлист в приложении';
+
+  @override
+  String get instruction_step_3_subtitle =>
+      'В приложении: Добавить плейлист → Импортировать URL → Вставить ссылку';
+
+  @override
+  String get instruction_step_4_title => 'Начните просмотр';
+
+  @override
+  String get instruction_step_4_subtitle =>
+      'Откройте плейлист и наслаждайтесь своими каналами.';
+
+  @override
+  String get favorites_list_coming_soon =>
+      'Список избранного скоро будет добавлен';
+
+  @override
+  String get default_m3u_playlist_name => 'M3U Плейлист-1';
+
+  @override
+  String get default_xtream_code_playlist_name => 'Плейлист-1';
+
+  @override
+  String get api_url_example_hint => 'http://example.com:8080';
+
+  @override
+  String get stream_id_label => 'ID потока';
+
+  @override
+  String rating_accessibility_label(Object rating) {
+    return 'Рейтинг $rating';
+  }
+
+  @override
+  String categories_load_error(Object error) {
+    return 'Не удалось загрузить категории: $error';
+  }
+
+  @override
+  String get premium_unlimited_playlists => 'Неограниченные плейлисты';
+
+  @override
+  String get premium_password_protected => 'Плейлисты с паролем';
+
+  @override
+  String get premium_ad_free => 'Опыт без рекламы';
 }

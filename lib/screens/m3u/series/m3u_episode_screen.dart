@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:another_iptv_player/database/database.dart';
 import 'package:another_iptv_player/models/playlist_content_model.dart';
 import 'package:another_iptv_player/models/watch_history.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import '../../../models/content_type.dart';
 import '../../../services/event_bus.dart';
 import '../../../widgets/loading_widget.dart';
 import '../../../widgets/player_widget.dart';
 import '../../../controllers/favorites_controller.dart';
 import '../../../models/favorite.dart';
+import '../../../utils/toast_utils.dart';
 
 class M3uEpisodeScreen extends StatefulWidget {
   final List<int> seasons;
@@ -76,12 +78,9 @@ class _M3uEpisodeScreenState extends State<M3uEpisodeScreen> {
         _isFavorite = result;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
-          ),
-        ),
+      ToastUtils.showSuccess(
+        context,
+        result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
       );
     }
   }
@@ -155,7 +154,7 @@ class _M3uEpisodeScreenState extends State<M3uEpisodeScreen> {
   @override
   Widget build(BuildContext context) {
     if (!allContentsLoaded) {
-      return buildFullScreenLoadingWidget();
+      return buildFullScreenLoadingWidget(context);
     } else {
       return Scaffold(
         body: SafeArea(
@@ -187,12 +186,9 @@ class _M3uEpisodeScreenState extends State<M3uEpisodeScreen> {
                                     Expanded(
                                       child: Text(
                                         contentItem.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                        style: AppTypography.headline4.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                     IconButton(
@@ -207,9 +203,8 @@ class _M3uEpisodeScreenState extends State<M3uEpisodeScreen> {
                                       context.loc.episode_count(
                                         allContents.length,
                                       ),
-                                      style: TextStyle(
-                                        color: Colors.grey.shade600,
-                                        fontSize: 14,
+                                      style: AppTypography.body2Regular.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       ),
                                     ),
                                   ],
@@ -263,9 +258,9 @@ class _M3uEpisodeScreenState extends State<M3uEpisodeScreen> {
       decoration: BoxDecoration(
         color: selectedContentItemIndex == index
             ? Theme.of(context).colorScheme.primaryContainer
-            : Colors.grey.withOpacity(0.1),
+            : Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
+        border: Border.all(color: Theme.of(context).colorScheme.outline, width: 1),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -294,10 +289,8 @@ class _M3uEpisodeScreenState extends State<M3uEpisodeScreen> {
                             return Center(
                               child: Text(
                                 '${episode.episodeNumber}.${context.loc.episode_short}',
-                                style: TextStyle(
+                                style: AppTypography.body1SemiBold.copyWith(
                                   color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
                                 ),
                               ),
                             );
@@ -307,10 +300,8 @@ class _M3uEpisodeScreenState extends State<M3uEpisodeScreen> {
                     : Center(
                         child: Text(
                           '${episode.episodeNumber}.${context.loc.episode_short}',
-                          style: TextStyle(
+                          style: AppTypography.body1SemiBold.copyWith(
                             color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
                           ),
                         ),
                       ),
@@ -325,10 +316,7 @@ class _M3uEpisodeScreenState extends State<M3uEpisodeScreen> {
                       episode.name,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
+                      style: AppTypography.body2SemiBold,
                     ),
                   ],
                 ),

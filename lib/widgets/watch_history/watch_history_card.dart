@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/models/content_type.dart';
 import 'package:another_iptv_player/models/watch_history.dart';
 import 'package:another_iptv_player/core/style/app_colors.dart';
@@ -146,10 +147,8 @@ class _WatchHistoryCardState extends State<WatchHistoryCard> with SingleTickerPr
                       children: [
                         Text(
                           widget.history.title,
-                          style: TextStyle(
+                          style: AppTypography.body3SemiBold.copyWith(
                             color: AppColors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -252,10 +251,9 @@ class _WatchHistoryCardState extends State<WatchHistoryCard> with SingleTickerPr
           children: [
             Text(
               _formatDuration(widget.history.watchDuration!),
-              style: TextStyle(
-                color: AppColors.white,
+              style: AppTypography.body3Medium.copyWith(
                 fontSize: 10,
-                fontWeight: FontWeight.w500,
+                color: AppColors.white,
                 shadows: [
                   Shadow(
                     color: Colors.black.withValues(alpha: 0.8),
@@ -266,10 +264,9 @@ class _WatchHistoryCardState extends State<WatchHistoryCard> with SingleTickerPr
             ),
             Text(
               _formatDuration(widget.history.totalDuration!),
-              style: TextStyle(
-                color: AppColors.white,
+              style: AppTypography.body3Medium.copyWith(
                 fontSize: 10,
-                fontWeight: FontWeight.w500,
+                color: AppColors.white,
                 shadows: [
                   Shadow(
                     color: Colors.black.withValues(alpha: 0.8),

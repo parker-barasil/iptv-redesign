@@ -3,6 +3,7 @@ import 'package:another_iptv_player/models/playlist_model.dart';
 import 'package:another_iptv_player/screens/m3u/m3u_data_loader_screen.dart';
 import 'package:another_iptv_player/services/m3u_parser.dart';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import '../../core/style/app_colors.dart';
 import '../../core/style/app_spacing.dart';
 import '../../core/new_widgets/app_button.dart';
 import '../../core/constants/enums/app_button_variants_enum.dart';
+import '../../utils/toast_utils.dart';
 
 class NewM3uPlaylistScreen extends StatefulWidget {
   const NewM3uPlaylistScreen({super.key});
@@ -25,7 +27,7 @@ class NewM3uPlaylistScreen extends StatefulWidget {
 
 class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController(text: 'M3U Playlist-1');
+  final _nameController = TextEditingController();
   final _urlController = TextEditingController();
   bool _isUrlSource = true;
   bool _isFormValid = false;
@@ -38,6 +40,14 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
     super.initState();
     _nameController.addListener(_validateForm);
     _urlController.addListener(_validateForm);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_nameController.text.isEmpty) {
+      _nameController.text = context.loc.default_m3u_playlist_name;
+    }
   }
 
   @override
@@ -88,9 +98,9 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
         _validateForm();
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(context.loc.file_selection_error)));
+      if (mounted) {
+        ToastUtils.showError(context, context.loc.file_selection_error);
+      }
     }
   }
 
@@ -115,7 +125,9 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
                       color: AppColors.neutralDark900.withValues(alpha: 0.5),
                       child: Center(
                         child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppColors.primary,
+                          ),
                         ),
                       ),
                     ),
@@ -134,8 +146,8 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
                     SizedBox(height: 20),
                     _buildErrorCard(controller.error!, colorScheme),
                   ],
-                  SizedBox(height: 20),
-                  _buildInfoCard(colorScheme),
+                  // SizedBox(height: 20),
+                  // _buildInfoCard(colorScheme),
                 ],
               ),
             ),
@@ -154,7 +166,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
           height: 60,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppColors.successGreen, AppColors.successIRNew],
+              colors: AppColors.accentGradientList,
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -167,23 +179,25 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
               ),
             ],
           ),
-          child: Icon(Icons.playlist_play_rounded, size: 30, color: AppColors.white),
+          child: Icon(
+            Icons.playlist_play_rounded,
+            size: 30,
+            color: AppColors.white,
+          ),
         ),
         SizedBox(height: 16),
         Text(
           context.loc.m3u_playlist,
-          style: TextStyle(
+          style: AppTypography.headline1.copyWith(
             fontSize: 26,
-            fontWeight: FontWeight.bold,
             color: colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 8),
         Text(
           context.loc.m3u_playlist_load_description,
-          style: TextStyle(
-            fontSize: 16,
-            color: colorScheme.onSurface.withOpacity(0.7),
+          style: AppTypography.body1Regular.copyWith(
+            color: colorScheme.onSurface.withValues(alpha: 0.7),
           ),
         ),
       ],
@@ -196,9 +210,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
       children: [
         Text(
           context.loc.playlist_name,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: AppTypography.body1SemiBold.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -239,9 +251,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
       children: [
         Text(
           context.loc.source_type,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: AppTypography.body1SemiBold.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -259,9 +269,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                     decoration: BoxDecoration(
-                      gradient: _isUrlSource
-                          ? AppColors.primaryGradient
-                          : null,
+                      gradient: _isUrlSource ? AppColors.primaryGradient : null,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(12),
                         bottomLeft: Radius.circular(12),
@@ -279,11 +287,10 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
                         SizedBox(width: 8),
                         Text(
                           context.loc.url,
-                          style: TextStyle(
+                          style: AppTypography.body1SemiBold.copyWith(
                             color: _isUrlSource
                                 ? AppColors.white
                                 : colorScheme.onSurface,
-                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -318,11 +325,10 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
                         SizedBox(width: 8),
                         Text(
                           context.loc.file,
-                          style: TextStyle(
+                          style: AppTypography.body1SemiBold.copyWith(
                             color: !_isUrlSource
                                 ? AppColors.white
                                 : colorScheme.onSurface,
-                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -343,9 +349,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
       children: [
         Text(
           context.loc.m3u_url,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: AppTypography.body1SemiBold.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -394,9 +398,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
       children: [
         Text(
           context.loc.m3u_file,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: AppTypography.body1SemiBold.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -414,7 +416,9 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
             child: Row(
               children: [
                 Icon(
-                  _selectedFilePath != null ? Icons.check_circle_rounded : Icons.folder_rounded,
+                  _selectedFilePath != null
+                      ? Icons.check_circle_rounded
+                      : Icons.folder_rounded,
                   color: _selectedFilePath != null
                       ? AppColors.successGreen
                       : colorScheme.primary,
@@ -425,10 +429,10 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
                     _selectedFilePath != null
                         ? _selectedFileName ?? context.loc.file_selected
                         : context.loc.select_m3u_file,
-                    style: TextStyle(
+                    style: AppTypography.body2Regular.copyWith(
                       color: _selectedFilePath != null
                           ? colorScheme.onSurface
-                          : colorScheme.onSurface.withOpacity(0.6),
+                          : colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -446,7 +450,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
             padding: EdgeInsets.only(top: 8),
             child: Text(
               context.loc.please_select_m3u_file,
-              style: TextStyle(color: colorScheme.error, fontSize: 12),
+              style: AppTypography.body3Regular.copyWith(color: colorScheme.error),
             ),
           ),
       ],
@@ -458,7 +462,9 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
     ColorScheme colorScheme,
   ) {
     return AppButton(
-      text: controller.isLoading ? context.loc.processing : context.loc.create_playlist,
+      text: controller.isLoading
+          ? context.loc.processing
+          : context.loc.create_playlist,
       onPressed: controller.isLoading
           ? null
           : (_isFormValid ? _savePlaylist : null),
@@ -489,17 +495,15 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
               children: [
                 Text(
                   context.loc.error_occurred_title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  style: AppTypography.body2SemiBold.copyWith(
                     color: colorScheme.onErrorContainer,
                   ),
                 ),
                 SizedBox(height: 4),
                 Text(
                   error,
-                  style: TextStyle(
+                  style: AppTypography.body2Regular.copyWith(
                     color: colorScheme.onErrorContainer,
-                    fontSize: 14,
                   ),
                 ),
               ],
@@ -527,8 +531,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
               SizedBox(width: 8),
               Text(
                 context.loc.info,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: AppTypography.body2SemiBold.copyWith(
                   color: colorScheme.onPrimaryContainer,
                 ),
               ),
@@ -537,9 +540,8 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
           SizedBox(height: 8),
           Text(
             context.loc.m3u_info_message,
-            style: TextStyle(
+            style: AppTypography.body3Regular.copyWith(
               color: colorScheme.onPrimaryContainer,
-              fontSize: 13,
               height: 1.4,
             ),
           ),
@@ -563,19 +565,25 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
         url: _isUrlSource ? _urlController.text : _selectedFileName,
       );
 
+      // Check if playlist creation failed
+      if (playlist == null) {
+        // Error already set by playlistController
+        return;
+      }
+
       List<M3uItem> m3uItems = [];
       showLoadingDialog(context, context.loc.loading_m3u);
 
       try {
         if (_isUrlSource) {
           print('URL: ${_urlController.text.trim()}');
-          final params = {'id': playlist!.id, 'url': _urlController.text};
+          final params = {'id': playlist.id, 'url': _urlController.text};
 
           m3uItems = await compute(M3uParser.parseM3uUrl, params);
         } else {
           print('File Path: $_selectedFilePath');
           print('File Name: $_selectedFileName');
-          final params = {'id': playlist!.id, 'filePath': _selectedFilePath!};
+          final params = {'id': playlist.id, 'filePath': _selectedFilePath!};
 
           m3uItems = await compute(M3uParser.parseM3uFile, params);
         }
@@ -585,7 +593,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
 
       if (m3uItems.length == 0) {
         playlistController.setError(context.loc.m3u_error);
-        await playlistController.deletePlaylist(playlist!.id);
+        await playlistController.deletePlaylist(playlist.id);
         return;
       }
 
@@ -593,7 +601,7 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              M3uDataLoaderScreen(playlist: playlist!, m3uItems: m3uItems),
+              M3uDataLoaderScreen(playlist: playlist, m3uItems: m3uItems),
         ),
       );
     }

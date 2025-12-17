@@ -7,10 +7,12 @@ import 'package:another_iptv_player/services/app_state.dart';
 import 'package:another_iptv_player/repositories/iptv_repository.dart';
 import 'package:another_iptv_player/l10n/localization_extension.dart';
 import 'package:another_iptv_player/core/style/app_colors.dart';
+import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/core/new_widgets/app_button.dart';
 import 'package:another_iptv_player/core/constants/enums/app_button_variants_enum.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../controllers/favorites_controller.dart';
+import '../../utils/toast_utils.dart';
 import 'episode_screen.dart';
 
 class SeriesScreen extends StatefulWidget {
@@ -104,12 +106,9 @@ class _SeriesScreenState extends State<SeriesScreen> {
         _isFavorite = result;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
-          ),
-        ),
+      ToastUtils.showSuccess(
+        context,
+        result ? context.loc.added_to_favorites : context.loc.removed_from_favorites,
       );
     }
   }
@@ -166,10 +165,8 @@ class _SeriesScreenState extends State<SeriesScreen> {
                                 Expanded(
                                   child: Text(
                                     seriesInfo?.name ?? widget.contentItem.name,
-                                    style: TextStyle(
+                                    style: AppTypography.headline2.copyWith(
                                       color: AppColors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
                                       shadows: [
                                         Shadow(
                                           offset: Offset(0, 1),
@@ -200,9 +197,8 @@ class _SeriesScreenState extends State<SeriesScreen> {
                                 seriesInfo?.genre ??
                                     widget.contentItem.seriesStream?.genre ??
                                     '',
-                                style: TextStyle(
+                                style: AppTypography.body2Regular.copyWith(
                                   color: AppColors.white.withValues(alpha: 0.9),
-                                  fontSize: 14,
                                   shadows: [
                                     Shadow(
                                       offset: Offset(0, 1),
@@ -249,7 +245,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
           children: [
             const CircularProgressIndicator(),
             const SizedBox(height: 16),
-            Text(context.loc.preparing_series),
+            Text(context.loc.preparing_series, style: AppTypography.body1Regular),
           ],
         ),
       );
@@ -264,7 +260,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
             const SizedBox(height: 16),
             Text(
               error!,
-              style: TextStyle(fontSize: 16, color: AppColors.errorPink),
+              style: AppTypography.body1Regular.copyWith(color: AppColors.errorPink),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -330,10 +326,8 @@ class _SeriesScreenState extends State<SeriesScreen> {
           ),
           child: Text(
             '$ratingText/5',
-            style: TextStyle(
+            style: AppTypography.body2SemiBold.copyWith(
               color: AppColors.infoYellow,
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
             ),
           ),
         ),
@@ -347,9 +341,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
       children: [
         Text(
           context.loc.season,
-          style: Theme.of(
-            context,
-          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: AppTypography.headline4,
         ),
         const SizedBox(height: 12),
         if (seasons.isEmpty)
@@ -364,7 +356,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
               children: [
                 Icon(Icons.info_outline_rounded, color: AppColors.neutral600),
                 const SizedBox(width: 12),
-                Text(context.loc.not_found_in_category),
+                Text(context.loc.not_found_in_category, style: AppTypography.body2Regular),
               ],
             ),
           )
@@ -423,10 +415,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
                     Expanded(
                       child: Text(
                         season.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: AppTypography.body1SemiBold,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -437,13 +426,13 @@ class _SeriesScreenState extends State<SeriesScreen> {
                   context.loc.episode_count(
                     (season.episodeCount ?? 0).toString(),
                   ),
-                  style: TextStyle(fontSize: 14, color: AppColors.neutral600),
+                  style: AppTypography.body2Regular.copyWith(color: AppColors.neutral600),
                 ),
                 if (season.airDate != null) ...[
                   const SizedBox(height: 4),
                   Text(
                     season.airDate!,
-                    style: TextStyle(fontSize: 12, color: AppColors.neutral700),
+                    style: AppTypography.body3Regular.copyWith(color: AppColors.neutral700),
                   ),
                 ],
               ],
@@ -580,17 +569,15 @@ class _SeriesScreenState extends State<SeriesScreen> {
                       Expanded(
                         child: Text(
                           season.name,
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                          style: AppTypography.headline4,
                         ),
                       ),
                       Text(
                         context.loc.episode_count(
                           (season.episodeCount ?? 0).toString(),
                         ),
-                        style: TextStyle(
+                        style: AppTypography.body2Regular.copyWith(
                           color: AppColors.neutral600,
-                          fontSize: 14,
                         ),
                       ),
                     ],
@@ -610,7 +597,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
                       final episodes = snapshot.data ?? [];
                       if (episodes.isEmpty) {
                         return Center(
-                          child: Text(context.loc.not_found_in_category),
+                          child: Text(context.loc.not_found_in_category, style: AppTypography.body2Regular),
                         );
                       }
 
@@ -699,10 +686,8 @@ class _SeriesScreenState extends State<SeriesScreen> {
                       return Center(
                         child: Text(
                           '${episode.episodeNum}',
-                          style: TextStyle(
+                          style: AppTypography.body1SemiBold.copyWith(
                             color: AppColors.primary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
                           ),
                         ),
                       );
@@ -712,10 +697,8 @@ class _SeriesScreenState extends State<SeriesScreen> {
                     : Center(
                   child: Text(
                     '${episode.episodeNum}',
-                    style: TextStyle(
+                    style: AppTypography.body1SemiBold.copyWith(
                       color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -734,10 +717,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
                             episode.title,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
+                            style: AppTypography.body2SemiBold,
                           ),
                         ),
                         if (isRecent)
@@ -753,10 +733,8 @@ class _SeriesScreenState extends State<SeriesScreen> {
                             ),
                             child:  Text(
                               context.loc.new_ep,
-                              style: TextStyle(
+                              style: AppTypography.body3SemiBold.copyWith(
                                 color: AppColors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -769,8 +747,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
                       const SizedBox(height: 4),
                       Text(
                         context.loc.duration(episode.duration!),
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: AppTypography.body3Regular.copyWith(
                           color: AppColors.neutral600,
                         ),
                       ),
@@ -783,8 +760,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
                         episode.plot!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: AppTypography.body3Regular.copyWith(
                           color: AppColors.neutral600,
                         ),
                       ),
@@ -813,9 +789,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
                           const SizedBox(width: 2),
                           Text(
                             episode.rating!.toStringAsFixed(1),
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
+                            style: AppTypography.body3SemiBold.copyWith(
                               color: AppColors.infoYellow,
                             ),
                           ),
@@ -889,9 +863,8 @@ class _SeriesScreenState extends State<SeriesScreen> {
                     Text(
                       'Görsel yükleniyor...',
                       // Bu string için de localization ekleyebiliriz
-                      style: TextStyle(
+                      style: AppTypography.body2Regular.copyWith(
                         color: AppColors.neutral600,
-                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -928,20 +901,16 @@ class _SeriesScreenState extends State<SeriesScreen> {
             Text(
               'Görsel Bulunamadı',
               // Bu string için de localization ekleyebiliriz
-              style: TextStyle(
+              style: AppTypography.body1Medium.copyWith(
                 color: AppColors.neutral600,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               seriesInfo?.name ?? widget.contentItem.name,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: AppTypography.headline3.copyWith(
                 color: AppColors.neutral700,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ],
@@ -979,19 +948,14 @@ class _SeriesScreenState extends State<SeriesScreen> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: AppTypography.body3Medium.copyWith(
                     color: AppColors.neutral600,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTypography.body1SemiBold,
                 ),
               ],
             ),
@@ -1021,9 +985,9 @@ class _SeriesScreenState extends State<SeriesScreen> {
         try {
           await launchUrl(url, mode: LaunchMode.externalApplication);
         } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(context.loc.error_occurred_title)),
-          );
+          if (mounted) {
+            ToastUtils.showError(context, context.loc.error_occurred_title);
+          }
         }
       },
       child: Container(
@@ -1046,10 +1010,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
             const SizedBox(width: 16),
             Text(
               context.loc.trailer,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTypography.body1SemiBold,
             ),
             const Spacer(),
             Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppColors.neutral600),

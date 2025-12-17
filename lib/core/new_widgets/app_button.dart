@@ -44,8 +44,7 @@ class AppButton extends StatelessWidget {
 
   Widget _buildButton(BuildContext context) {
     // For gradient buttons, use Container with gradient
-    if (style == AppButtonStyleEnum.primaryGradient ||
-        style == AppButtonStyleEnum.accentGradient) {
+    if (style == AppButtonStyleEnum.primaryGradient || style == AppButtonStyleEnum.accentGradient) {
       return _buildGradientButton(context);
     }
 
@@ -69,9 +68,7 @@ class AppButton extends StatelessWidget {
         child: InkWell(
           onTap: isActive && !isLoading ? onPressed : null,
           borderRadius: BorderRadius.circular(_getBorderRadius()),
-          child: Center(
-            child: _buildButtonContent(context),
-          ),
+          child: Center(child: _buildButtonContent(context)),
         ),
       ),
     );
@@ -89,14 +86,10 @@ class AppButton extends StatelessWidget {
             color: isActive ? AppColors.primary : AppPalette.neutral500Of(context),
             width: 1,
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(_getBorderRadius()),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_getBorderRadius())),
           padding: EdgeInsets.zero,
         ),
-        child: Center(
-          child: _buildButtonContent(context),
-        ),
+        child: Center(child: _buildButtonContent(context)),
       );
     }
 
@@ -108,14 +101,10 @@ class AppButton extends StatelessWidget {
         disabledBackgroundColor: _getBackgroundColor(context),
         disabledForegroundColor: _getTextColor(context),
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(_getBorderRadius()),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_getBorderRadius())),
         padding: EdgeInsets.zero,
       ),
-      child: Center(
-        child: _buildButtonContent(context),
-      ),
+      child: Center(child: _buildButtonContent(context)),
     );
   }
 
@@ -144,19 +133,12 @@ class AppButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (icon != null) ...[
-                Icon(
-                  icon!,
-                  size: _getIconSize(),
-                  color: _getTextColor(context),
-                ),
+                Icon(icon!, size: _getIconSize(), color: _getTextColor(context)),
                 SizedBox(width: AppSpacing.sm),
               ],
               Text(
                 text,
-                style: _getTextStyle().copyWith(
-                  color: _getTextColor(context),
-                  height: 1.2,
-                ),
+                style: _getTextStyle().copyWith(color: _getTextColor(context), height: 1.2),
               ),
             ],
           ),
@@ -180,27 +162,16 @@ class AppButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon!,
-            size: _getIconSize(),
-            color: _getTextColor(context),
-          ),
+          Icon(icon!, size: _getIconSize(), color: _getTextColor(context)),
           SizedBox(width: AppSpacing.sm),
-          Text(
-            text,
-            style: _getTextStyle().copyWith(
-              color: _getTextColor(context),
-            ),
-          ),
+          Text(text, style: _getTextStyle().copyWith(color: _getTextColor(context))),
         ],
       );
     }
 
-    return Text(
-      text,
-      style: _getTextStyle().copyWith(
-        color: _getTextColor(context),
-      ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: fullWidth ? 0 : 10),
+      child: Text(text, style: _getTextStyle().copyWith(color: _getTextColor(context))),
     );
   }
 

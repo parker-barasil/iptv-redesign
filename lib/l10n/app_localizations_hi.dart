@@ -692,4 +692,132 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get new_ep => 'नया';
+
+  @override
+  String get not_provided => 'प्रदान नहीं किया गया';
+
+  @override
+  String get unknown => 'अज्ञात';
+
+  @override
+  String get no_audio_track => 'कोई ऑडियो ट्रैक नहीं';
+
+  @override
+  String get no_subtitle_track => 'कोई उपशीर्षक ट्रैक नहीं';
+
+  @override
+  String get repository_not_available => 'रिपॉजिटरी उपलब्ध नहीं';
+
+  @override
+  String get no_favorites_yet => 'अभी तक कोई पसंदीदा नहीं';
+
+  @override
+  String get series_not_found => 'सीरीज नहीं मिली';
+
+  @override
+  String get sort_a_to_z => 'A → Z';
+
+  @override
+  String get sort_z_to_a => 'Z → A';
+
+  @override
+  String get xtream_codes => 'Xtream Codes';
+
+  @override
+  String get m3u_playlist_type => 'M3U प्लेलिस्ट';
+
+  @override
+  String get xstream_playlist => 'XStream प्लेलिस्ट';
+
+  @override
+  String get loading => 'लोड हो रहा है...';
+
+  @override
+  String error_message(Object message) {
+    return 'त्रुटि: $message';
+  }
+
+  @override
+  String get live_broadcast => 'लाइव';
+
+  @override
+  String get film => 'फिल्म';
+
+  @override
+  String get series => 'सीरीज';
+
+  @override
+  String get continue_watching => 'जारी रखें';
+
+  @override
+  String get films => 'फिल्में';
+
+  @override
+  String get series_list => 'सीरीज';
+
+  @override
+  String get instructions_title =>
+      'IPTV Smart Player में प्लेलिस्ट कैसे जोड़ें';
+
+  @override
+  String get instruction_step_1_title => 'M3U प्लेलिस्ट खोजें';
+
+  @override
+  String get instruction_step_1_subtitle =>
+      'ऑनलाइन सार्वजनिक रूप से उपलब्ध IPTV प्लेलिस्ट (M3U) खोजें';
+
+  @override
+  String get instruction_step_2_title => 'लिंक कॉपी करें या डाउनलोड करें';
+
+  @override
+  String get instruction_step_2_subtitle =>
+      'प्लेलिस्ट लिंक कॉपी करें या .m3u फ़ाइल डाउनलोड करें';
+
+  @override
+  String get instruction_step_3_title => 'ऐप में प्लेलिस्ट आयात करें';
+
+  @override
+  String get instruction_step_3_subtitle =>
+      'ऐप में: प्लेलिस्ट जोड़ें → URL आयात करें → लिंक पेस्ट करें';
+
+  @override
+  String get instruction_step_4_title => 'देखना शुरू करें';
+
+  @override
+  String get instruction_step_4_subtitle =>
+      'प्लेलिस्ट खोलें और अपने चैनलों का आनंद लें।';
+
+  @override
+  String get favorites_list_coming_soon => 'पसंदीदा सूची जल्द ही जोड़ी जाएगी';
+
+  @override
+  String get default_m3u_playlist_name => 'M3U प्लेलिस्ट-1';
+
+  @override
+  String get default_xtream_code_playlist_name => 'प्लेलिस्ट-1';
+
+  @override
+  String get api_url_example_hint => 'http://example.com:8080';
+
+  @override
+  String get stream_id_label => 'स्ट्रीम ID';
+
+  @override
+  String rating_accessibility_label(Object rating) {
+    return 'रेटिंग $rating';
+  }
+
+  @override
+  String categories_load_error(Object error) {
+    return 'श्रेणियां लोड नहीं हो सकीं: $error';
+  }
+
+  @override
+  String get premium_unlimited_playlists => 'असीमित प्लेलिस्ट';
+
+  @override
+  String get premium_password_protected => 'पासवर्ड संरक्षित प्लेलिस्ट';
+
+  @override
+  String get premium_ad_free => 'विज्ञापन मुक्त अनुभव';
 }

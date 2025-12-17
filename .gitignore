@@ -102,9 +102,9 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # Environment variables
-.env
-.env.local
-.env.*.local
+# .env
+# .env.local
+# .env.*.local
 
 # Firebase
 **/ios/**/GoogleService-Info.plist
@@ -130,3 +130,6 @@ docs/.vitepress/cache/
 docs/.vitepress/dist/
 
 node_modules/
+/aicleaner
+/windows
+/linux
