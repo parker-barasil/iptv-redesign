@@ -28,7 +28,7 @@ class ApphudService implements ApphudListener {
 
   // Product IDs согласно структуре Apphud
   static const String weekProductId = 'id_week';
-  static const String lifetimeProductId = 'id_lifetime';
+  static const String monthProductId = 'id_month';
   static const String yearProductId = 'id_year';
 
   // Paywall identifier
@@ -269,7 +269,7 @@ class ApphudService implements ApphudListener {
 
   /// Покупка продукта
   ///
-  /// [productId] - ID продукта (id_week, id_lifetime, id_year)
+  /// [productId] - ID продукта (id_week, id_month, id_year)
   /// Или передайте ApphudProductComposite напрямую
   ///
   /// В mock-режиме эмулирует покупку

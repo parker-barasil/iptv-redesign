@@ -35,7 +35,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "9.99",
+          "displayPrice" : "4.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "6756603821",
@@ -63,22 +63,23 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "39.99",
+          "displayPrice" : "14.99",
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "6756603955",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Lifetime Premium Access",
-              "displayName" : "Premium Lifetime",
+              "description" : "Monthly Premium Access",
+              "displayName" : "Premium Monthly",
               "locale" : "en_US"
             }
           ],
-          "productID" : "id_lifetime",
-          "referenceName" : "Premium Lifetime",
+          "productID" : "id_month",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
           "subscriptionGroupID" : "21566156",
-          "type" : "NonRenewingSubscription",
+          "type" : "RecurringSubscription",
           "winbackOffers" : [
 
           ]
@@ -90,7 +91,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "29.99",
+          "displayPrice" : "39.99",
           "familyShareable" : false,
           "groupNumber" : 3,
           "internalID" : "6756604049",
