@@ -1,153 +1,138 @@
-name: another_iptv_player
-description: "Ventro IPTV"
+name: "ai_cleaner_2"
+description: "AI Cleaner 2 - Clean Up Your Storage"
 publish_to: "none"
-
-version: 1.0.0+1
+version: "1.0.3+12"
+scripts:
+  gen: "dart run build_runner watch"
+  build: "flutter build ipa --obfuscate --split-debug-info=debug-info --target=lib/main_production.dart"
 
 environment:
   sdk: ^3.9.2
 
+# Основные зависимости Flutter
 dependencies:
-  flutter :
+  flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
-  get_it: ^7.2.0
-  media_kit:
-    git:
-      url: https://github.com/media-kit/media-kit.git
-      path: media_kit
-      ref: main
-  media_kit_video:
-    git:
-      url: https://github.com/media-kit/media-kit.git
-      path: media_kit_video
-      ref: main
-  media_kit_libs_video:
-    git:
-      url: https://github.com/media-kit/media-kit.git
-      path: libs/universal/media_kit_libs_video
-      ref: main
-  provider: ^6.1.1
-  drift: ^2.26.1
-  sqlite3_flutter_libs: ^0.5.34
   cupertino_icons: ^1.0.8
-  http: ^1.4.0
-  cached_network_image: ^3.4.1
-  audio_service: ^0.18.18
-  just_audio: ^0.10.4
-  rxdart: ^0.28.0
-  flutter_in_app_pip: ^1.7.4
-  flutter_launcher_icons: ^0.14.4
-  persistent_bottom_nav_bar: ^6.2.1
-  shared_preferences: ^2.5.3
-  audio_session: ^0.2.2
-  drift_dev: any
-  sqlite3: any
-  path_provider: any
-  path: any
-  meta: any
-  file_picker: ^8.0.0+1
-  uuid: ^4.5.1
-  collection: ^1.19.1
-  connectivity_plus: ^6.1.4
-  url_launcher: ^6.3.2
-  package_info_plus: ^8.0.0
-  wakelock_plus: ^1.2.5
-  lottie: ^3.3.2
-  in_app_review: ^2.0.9
-  flutter_svg: ^2.0.10+1
 
-  # Subscription & Analytics
-  apphud: ^2.7.4
+  collection: ^1.19.0
+  path: ^1.9.0
+  timezone: ^0.10.0
+
+  # Управление состоянием и хранилища
+  flutter_bloc: ^9.1.1
+  bloc: ^9.0.0
+  hydrated_bloc: ^10.0.0
+  mutex: ^3.1.0
+  rate_limiter: ^1.0.0
+  equatable: ^2.0.7
+
+  # Внедрение зависимостей
+  get_it: ^8.0.3
+  injectable: ^2.5.2
+
+  # Генерация кода и аннотации
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  auto_route: ^9.2.2
+
+  # Интерфейс и анимации
+  flutter_animate: ^4.5.2
+  auto_size_text: ^3.0.0
+  auto_size_text_field: ^2.2.4
+  gap: ^3.0.1
+  flip_card: ^0.7.0
+  fading_edge_scrollview: ^4.1.1
+  smooth_sheets: ^0.10.2
+  table_calendar: ^3.2.0
+  visibility_detector: ^0.4.0+2
+  flutter_shaders: ^0.1.3
+  simple_shadow: ^0.3.1
+  widget_zoom: ^0.0.4
+  toastification: ^2.3.0
+  liquid_glass_renderer: ^0.1.1-dev.25
+  figma_squircle: ^0.6.3
+
+  # Иконки и шрифты
+  google_fonts: ^6.2.1
+  flutter_feather_icons: ^2.0.0+1
+  pixelarticons: ^0.4.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_svg: ^2.2.1
+
+  # Мультимедиа и работа с файлами
+  photo_manager: ^3.7.1
+  photo_manager_image_provider: ^2.2.0
+  photo_view: ^0.15.0
+  video_player: ^2.9.5
+  widgets_to_image: ^1.0.0
+  dart_geohash: ^2.1.0
+  path_provider: ^2.1.5
+
+  # Анализ фото
+  # tflite_flutter: ^0.11.0  # использую DCT и Laplacian вместо ML
+  image: ^4.5.4
+  blurhash_dart: ^1.2.1
+  image_hash: ^1.0.9
+
+  # Разрешения и доступ
+  permission_handler: ^12.0.0+1
+  app_links: ^6.3.3
+  url_launcher: ^6.3.1
+  mailto: ^2.0.0
+
+  # Сервисы и интеграции
+  appinio_swiper: ^2.1.1
+  appinio_social_share: ^0.3.2
+  package_info_plus: ^8.1.2
+  flutter_markdown: ^0.7.7+1
+  flutter_dotenv: ^5.2.1
   in_app_purchase: ^3.2.2
+  apphud: ^2.7.4
   appsflyer_sdk: ^6.16.1
   app_tracking_transparency: ^2.0.4
   flutter_secure_storage: ^9.2.2
-  flutter_dotenv: ^5.2.1
+  uuid: ^4.5.1
+  share_plus: ^10.1.4
+  in_app_review: ^2.0.10
+  shared_preferences: ^2.3.4
 
-dependency_overrides:
-  media_kit:
-    git:
-      url: https://github.com/media-kit/media-kit.git
-      path: media_kit
-      ref: main
+  # Сплэш и инициализация
+  flutter_native_splash: 2.4.4
 
-  media_kit_video:
-    git:
-      url: https://github.com/media-kit/media-kit.git
-      path: media_kit_video
-      ref: main
-
-  media_kit_libs_video:
-    git:
-      url: https://github.com/media-kit/media-kit.git
-      path: libs/universal/media_kit_libs_video
-      ref: main
-
+# Инструменты разработки
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.5.4
   flutter_lints: ^5.0.0
-  build_web_compilers: ^4.1.5
-  intl_utils: ^2.8.7
 
-  build: any
-  mockito: ^5.4.6
+  # Генерация кода
+  build_runner: ^2.4.9
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
+  auto_route_generator: ^9.0.0
+  intl_utils: ^2.8.3
 
 flutter:
   uses-material-design: true
-  generate: true
-
   assets:
-    - .env
-    - assets/svg/
-    - assets/splash.json
-    - assets/splash_2.json
-    # - assets/images/
-    # - assets/icons/
-    # - assets/icons/player/
-    # - assets/icons/chat/
-    # - assets/anim/
-    # - assets/audio/
+    - ".env"
+    - assets/
+    # - assets/fonts/
+    - assets/images/
+    - assets/vectors/
+    # - assets/lottie/
+    - assets/models/
 
-  fonts:
-    - family: OpenSans
-      fonts:
-        - asset: assets/fonts/open_sans/OpenSans-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/open_sans/OpenSans-Italic.ttf
-          weight: 400
-          style: italic
-        - asset: assets/fonts/open_sans/OpenSans-Light.ttf
-          weight: 300
-        - asset: assets/fonts/open_sans/OpenSans-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/open_sans/OpenSans-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/open_sans/OpenSans-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/open_sans/OpenSans-ExtraBold.ttf
-          weight: 800
-
+flutter_intl:
+  enabled: true
+  class_name: Locales
+  main_locale: en
 
 flutter_launcher_icons:
   android: true
   ios: true
-  remove_alpha_ios: true
-  background_color_ios: "#ffffff"
-  image_path: "assets/logo.png"
-  min_sdk_android: 21
-  macos:
-    generate: true
-    image_path: "assets/logo.png"
-  windows:
-    generate: true
-    image_path: "assets/logo.png"
-    icon_size: 48
-  linux:
-    generate: true
-    image_path: "assets/logo.png"
-
+  image_path: "assets/app_icon.png"

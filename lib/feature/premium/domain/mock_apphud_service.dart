@@ -13,8 +13,8 @@ class MockApphudService {
 
   // Product IDs
   static const String weekProductId = 'id_week';
-  static const String monthProductId = 'id_month';
   static const String yearProductId = 'id_year';
+  static const String lifetimeProductId = 'id_lifetime';
 
   // Stream для уведомлений об изменении статуса подписки
   final _premiumStatusController = StreamController<bool>.broadcast();
@@ -58,15 +58,15 @@ class MockApphudService {
         paywallIdentifier: 'pro_paywall',
       ),
       ApphudProduct(
-        productId: monthProductId,
-        store: 'app_store',
-        name: 'Monthly Premium Subscription',
-        paywallIdentifier: 'pro_paywall',
-      ),
-      ApphudProduct(
         productId: yearProductId,
         store: 'app_store',
         name: 'Yearly Premium Subscription',
+        paywallIdentifier: 'pro_paywall',
+      ),
+      ApphudProduct(
+        productId: lifetimeProductId,
+        store: 'app_store',
+        name: 'Lifetime Premium Access',
         paywallIdentifier: 'pro_paywall',
       ),
     ];

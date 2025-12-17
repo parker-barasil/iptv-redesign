@@ -6,13 +6,10 @@
 .DS_Store
 .atom/
 .build/
-.swiftpm/
-Packages/
-*.xcodeproj
-xcuserdata/
-DerivedData/.buildlog/
+.buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -32,7 +29,6 @@ migrate_working_dir/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-.packages
 .pub-cache/
 .pub/
 /build/
@@ -48,88 +44,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# iOS related
-**/ios/**/*.mode1v3
-**/ios/**/*.mode2v3
-**/ios/**/*.moved-aside
-**/ios/**/*.pbxuser
-**/ios/**/*.perspectivev3
-**/ios/**/*sync/
-**/ios/**/.sconsign.dblite
-**/ios/**/.tags*
-**/ios/**/.vagrant/
-**/ios/**/DerivedData/
-**/ios/**/Icon?
-**/ios/**/Pods/
-**/ios/**/.symlinks/
-**/ios/**/profile
-**/ios/**/xcuserdata
-**/ios/.generated/
-**/ios/Flutter/App.framework
-**/ios/Flutter/Flutter.framework
-**/ios/Flutter/Flutter.podspec
-**/ios/Flutter/Generated.xcconfig
-**/ios/Flutter/ephemeral/
-**/ios/Flutter/app.flx
-**/ios/Flutter/app.zip
-**/ios/Flutter/flutter_assets/
-**/ios/Flutter/flutter_export_environment.sh
-**/ios/ServiceDefinitions.json
-**/ios/Runner/GeneratedPluginRegistrant.*
-
-# Web related
-
-# Windows related
-**/windows/**/flutter/generated_plugin_registrant.cc
-**/windows/**/flutter/generated_plugin_registrant.h
-**/windows/**/flutter/generated_plugins.cmake
-
-# MacOS related
-**/macos/Flutter/GeneratedPluginRegistrant.swift
-
-# Linux related
-**/linux/flutter/generated_plugin_registrant.cc
-**/linux/flutter/generated_plugin_registrant.h
-**/linux/flutter/generated_plugins.cmake
-
-# Coverage
-coverage/
-
-# Symbols
-app.*.symbols
-
-# Exceptions to above rules
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
-
-# Environment variables
 # .env
-# .env.local
-# .env.*.local
+/upload.sh
 
-# Firebase
-**/ios/**/GoogleService-Info.plist
-**/android/**/google-services.json
-firebase_options.dart
-
-# API Keys and sensitive files
-**/*config.dart
-**/*secrets.dart
-**/*keys.dart
-
-# Platform-specific build outputs
-**/android/app/outputs/
-**/android/app/build/
-**/ios/build/
-**/web/build/
-**/windows/build/
-**/macos/build/
-**/linux/build/
-
-docs/.vitepress/cache/
-
-docs/.vitepress/dist/
-
-node_modules/
-/aicleaner
-/windows
-/linux
+/android/build
+/ios/build/ios/XCBuildData
+android/.kotlin/sessions/kotlin-compiler-14855157112420240639.salive
+# Ignore all ephemeral files
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+/linux/flutter/ephemeral/.plugin_symlinks
+ios/Podfile.lock

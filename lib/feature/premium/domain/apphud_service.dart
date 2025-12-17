@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:another_iptv_player/services/analytics_service.dart';
+import 'package:ai_cleaner_2/core/services/analytics_service.dart';
 import 'package:apphud/apphud.dart';
 import 'package:apphud/models/apphud_models/apphud_paywalls.dart';
 import 'package:apphud/models/apphud_models/apphud_placement.dart';
@@ -28,8 +28,8 @@ class ApphudService implements ApphudListener {
 
   // Product IDs согласно структуре Apphud
   static const String weekProductId = 'id_week';
-  static const String monthProductId = 'id_month';
   static const String yearProductId = 'id_year';
+  static const String lifetimeProductId = 'id_lifetime';
 
   // Paywall identifier
   static const String mainPaywallId = 'pro_paywall';
@@ -185,51 +185,23 @@ class ApphudService implements ApphudListener {
 
       try {
         // Устанавливаем себя как listener
-        debugPrint('🔐 ApphudService: 1️⃣ Устанавливаем ApphudListener...');
         Apphud.setListener(listener: this);
-        debugPrint('🔐 ApphudService: ✅ Listener установлен');
 
         // Включаем debug логи
-        debugPrint('🔐 ApphudService: 2️⃣ Включаем debug логи Apphud SDK...');
         await Apphud.enableDebugLogs(level: ApphudDebugLevel.high);
-        debugPrint('🔐 ApphudService: ✅ Debug логи включены');
 
         // Инициализация SDK - это запустит все callbacks
-        debugPrint('🔐 ApphudService: 3️⃣ Запускаем Apphud.start()...');
-        debugPrint('🔐 ApphudService:    API Key: ${apiKey.substring(0, 10)}...');
-        debugPrint('🔐 ApphudService:    Ожидание ответа (таймаут: 30 сек)...');
-
-        final user = await Apphud.start(apiKey: apiKey).timeout(
-          const Duration(seconds: 30),
-          onTimeout: () {
-            debugPrint('🔐 ApphudService: ⏱️ TIMEOUT: Apphud.start() не ответил за 30 секунд!');
-            debugPrint('🔐 ApphudService: ⚠️ Возможные причины:');
-            debugPrint('🔐 ApphudService:    - Тестирование на симуляторе (используйте USE_MOCK_APPHUD=true в .env)');
-            debugPrint('🔐 ApphudService:    - Нет интернет соединения');
-            debugPrint('🔐 ApphudService:    - Неверный API ключ');
-            debugPrint('🔐 ApphudService:    - StoreKit не настроен (на симуляторе не работает)');
-            throw TimeoutException('Apphud.start() timeout after 30 seconds');
-          },
-        );
-
-        debugPrint('🔐 ApphudService: ✅ Apphud.start() завершен успешно!');
-        debugPrint('🔐 ApphudService:    User ID: ${user.userId}');
+        debugPrint('🔐 ApphudService: Запускаем Apphud.start()...');
+        final user = await Apphud.start(apiKey: apiKey);
+        debugPrint('🔐 ApphudService: ✅ Apphud.start() завершен, user: ${user.userId}');
 
         // Инициализация AppsFlyer + ASA (после Apphud.start)
-        debugPrint('🔐 ApphudService: 4️⃣ Инициализация AppsFlyer + ASA...');
         await AnalyticsService.init();
-        debugPrint('🔐 ApphudService: ✅ AppsFlyer + ASA инициализированы');
 
         _isInitialized = true;
-        debugPrint('🔐 ApphudService: ========================================');
         debugPrint('🔐 ApphudService: ✅ Инициализация завершена успешно');
-        debugPrint('🔐 ApphudService: ========================================');
-      } catch (e, stackTrace) {
-        debugPrint('🔐 ApphudService: ========================================');
-        debugPrint('🔐 ApphudService: ❌ ОШИБКА инициализации: $e');
-        debugPrint('🔐 ApphudService: StackTrace:');
-        debugPrint(stackTrace.toString());
-        debugPrint('🔐 ApphudService: ========================================');
+      } catch (e) {
+        debugPrint('🔐 ApphudService: ❌ Ошибка инициализации: $e');
         rethrow;
       }
     } catch (e) {
@@ -269,7 +241,7 @@ class ApphudService implements ApphudListener {
 
   /// Покупка продукта
   ///
-  /// [productId] - ID продукта (id_week, id_month, id_year)
+  /// [productId] - ID продукта (id_week, id_year, id_lifetime)
   /// Или передайте ApphudProductComposite напрямую
   ///
   /// В mock-режиме эмулирует покупку

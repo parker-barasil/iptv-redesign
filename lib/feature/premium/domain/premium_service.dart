@@ -21,8 +21,8 @@ class PremiumService {
 
   // Product IDs - используем Apphud IDs
   static const String weekProductId = ApphudService.weekProductId;
-  static const String monthProductId = ApphudService.monthProductId;
   static const String yearProductId = ApphudService.yearProductId;
+  static const String lifetimeProductId = ApphudService.lifetimeProductId;
 
   // Список доступных продуктов
   List<ApphudProduct> get products => _apphudService.products;
@@ -68,7 +68,7 @@ class PremiumService {
 
   /// Покупка подписки
   ///
-  /// [productId] - ID продукта (weekProductId, monthProductId, yearProductId)
+  /// [productId] - ID продукта (weekProductId, yearProductId, lifetimeProductId)
   Future<bool> purchaseSubscription([String? productId]) async {
     try {
       final targetProductId = productId ?? weekProductId;
