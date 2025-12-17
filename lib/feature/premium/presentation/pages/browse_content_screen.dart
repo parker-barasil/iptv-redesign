@@ -61,11 +61,11 @@ class _IptvPaywallScreenState extends State<IptvPaywallScreen> {
       case 0:
         return ApphudService.weekProductId;
       case 1:
-        return ApphudService.monthProductId;
+        return ApphudService.lifetimeProductId;
       case 2:
         return ApphudService.yearProductId;
       default:
-        return ApphudService.monthProductId;
+        return ApphudService.lifetimeProductId;
     }
   }
 
