@@ -27,11 +27,7 @@ class PlaylistErrorState extends StatelessWidget {
   final String error;
   final VoidCallback onRetry;
 
-  const PlaylistErrorState({
-    super.key,
-    required this.error,
-    required this.onRetry,
-  });
+  const PlaylistErrorState({super.key, required this.error, required this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +37,13 @@ class PlaylistErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline_rounded,
-              size: 64,
-              color: AppColors.errorPink,
-            ),
+            Icon(Icons.error_outline_rounded, size: 64, color: AppColors.errorPink),
             const SizedBox(height: 16),
-            Text(
-              context.loc.error_occurred,
-              style: AppTypography.headline3.copyWith(fontSize: 20),
-            ),
+            Text(context.loc.error_occurred, style: AppTypography.headline3.copyWith(fontSize: 20)),
             const SizedBox(height: 8),
             Text(
               error,
-              style: AppTypography.body2Regular.copyWith(
-                color: AppColors.errorPink,
-              ),
+              style: AppTypography.body2Regular.copyWith(color: AppColors.errorPink),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -87,17 +74,11 @@ class PlaylistEmptyState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            Icon(
-              Icons.playlist_add_rounded,
-              size: 60,
-              color: AppPalette.neutral600Of(context),
-            ),
+            Icon(Icons.playlist_add_rounded, size: 60, color: AppPalette.neutral600Of(context)),
             const SizedBox(height: 24),
             Text(
               context.loc.empty_playlist_title,
-              style: AppTypography.headline2.copyWith(
-                color: AppPalette.neutral700Of(context),
-              ),
+              style: AppTypography.headline2.copyWith(color: AppPalette.neutral700Of(context)),
             ),
             const SizedBox(height: 12),
             // Text(
@@ -138,11 +119,7 @@ class InstructionsWidget extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           context.loc.instructions_title,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: colorText,
-          ),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: colorText),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
@@ -176,31 +153,6 @@ class InstructionsWidget extends StatelessWidget {
         ),
 
         SizedBox(height: 80),
-        // Row(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     Icon(Icons.info_outline, color: colorPrimary, size: 16),
-        //     const SizedBox(width: 8),
-        //     Expanded(
-        //       child: RichText(
-        //         text: TextSpan(
-        //           text: "Пользуясь данным приложением, вы даете согласие на ",
-        //           style: TextStyle(fontSize: 14, color: colorText.withOpacity(0.85)),
-        //           children: [
-        //             TextSpan(
-        //               text: "Условия использования",
-        //               style: TextStyle(
-        //                 fontSize: 14,
-        //                 color: colorPrimary,
-        //                 decoration: TextDecoration.underline,
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
@@ -237,11 +189,7 @@ class _InstructionItem extends StatelessWidget {
             ),
             child: Text(
               index.toString(),
-              style: TextStyle(
-                fontSize: 16,
-                color: colorPrimary,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 16, color: colorPrimary, fontWeight: FontWeight.w600),
             ),
           ),
 
@@ -272,11 +220,7 @@ class _InstructionItem extends StatelessWidget {
 
                 Text(
                   subtitle,
-                  style: TextStyle(
-                    color: colorText.withOpacity(0.85),
-                    height: 1.35,
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: colorText.withOpacity(0.85), height: 1.35, fontSize: 14),
                 ),
               ],
             ),

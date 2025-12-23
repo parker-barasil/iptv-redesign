@@ -170,15 +170,9 @@ class _DeletePlaylistDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(context.loc.playlist_delete_confirmation_title),
-      content: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              style: AppTypography.body2Regular,
-              text: context.loc.playlist_delete_confirmation_message(playlist.name),
-            ),
-          ],
-        ),
+      content: Text(
+        context.loc.playlist_delete_confirmation_message(playlist.name),
+        style: AppTypography.body2Regular,
       ),
       actions: [
         AppButton(
