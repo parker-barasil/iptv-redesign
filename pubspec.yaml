@@ -106,6 +106,7 @@ flutter:
     - assets/svg/
     - assets/splash.json
     - assets/splash_2.json
+    - assets/demo_playlist.m3u
     # - assets/images/
     # - assets/icons/
     # - assets/icons/player/

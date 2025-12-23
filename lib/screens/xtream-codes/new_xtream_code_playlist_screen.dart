@@ -1,7 +1,9 @@
 import 'package:another_iptv_player/l10n/localization_extension.dart';
 import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/screens/xtream-codes/xtream_code_data_loader_screen.dart';
+import 'package:another_iptv_player/screens/m3u/m3u_data_loader_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:another_iptv_player/core/style/app_colors.dart';
 import 'package:another_iptv_player/core/new_widgets/app_button.dart';
@@ -437,6 +439,18 @@ class NewXtreamCodePlaylistScreenState
 
       controller.clearError();
 
+      // ========== DEMO MODE FOR APP STORE REVIEW ==========
+      // If username is "demo" and password is "demo", load demo playlist
+      final isDemoMode = _usernameController.text.trim() == 'demo' &&
+          _passwordController.text.trim() == 'demo';
+
+      if (isDemoMode) {
+        debugPrint('🎭 DEMO MODE: Loading demo playlist for App Store Review');
+        await _loadDemoPlaylist(controller);
+        return;
+      }
+      // ====================================================
+
       final repository = IptvRepository(
         ApiConfig(
           baseUrl: _urlController.text.trim(),
@@ -470,6 +484,50 @@ class NewXtreamCodePlaylistScreenState
           ),
         );
       }
+    }
+  }
+
+  /// Load demo playlist for App Store Review
+  ///
+  /// This method loads a pre-configured M3U playlist from assets when
+  /// the user enters demo/demo credentials. This allows Apple reviewers
+  /// to test the app without needing a real IPTV subscription.
+  Future<void> _loadDemoPlaylist(PlaylistController controller) async {
+    try {
+      debugPrint('🎭 Loading demo playlist from assets...');
+
+      // Load demo M3U file from assets
+      final demoM3uContent = await rootBundle.loadString('assets/demo_playlist.m3u');
+
+      debugPrint('🎭 Demo M3U loaded, length: ${demoM3uContent.length} chars');
+
+      // Create M3U playlist in database
+      final playlist = await controller.createPlaylist(
+        name: '${_nameController.text.trim()} (Demo)',
+        type: PlaylistType.m3u,
+        fileContent: demoM3uContent,
+      );
+
+      if (playlist != null) {
+        debugPrint('🎭 Demo playlist created successfully, navigating to loader');
+
+        // Navigate to M3U data loader screen
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => M3uDataLoaderScreen(playlist: playlist),
+            ),
+          );
+        }
+      } else {
+        debugPrint('❌ Failed to create demo playlist');
+        controller.setError('Failed to load demo playlist');
+      }
+    } catch (e, stackTrace) {
+      debugPrint('❌ Error loading demo playlist: $e');
+      debugPrint('StackTrace: $stackTrace');
+      controller.setError('Error loading demo content: $e');
     }
   }
 }
