@@ -21,11 +21,11 @@ class PlaylistUtils {
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'Bugün';
+      return '';
     } else if (difference.inDays == 1) {
-      return 'Dün';
+      return '';
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} gün önce';
+      return '${difference.inDays}';
     } else {
       return '${date.day}.${date.month}.${date.year}';
     }
