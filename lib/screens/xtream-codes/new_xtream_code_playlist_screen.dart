@@ -2,6 +2,7 @@ import 'package:another_iptv_player/l10n/localization_extension.dart';
 import 'package:another_iptv_player/core/style/app_typography.dart';
 import 'package:another_iptv_player/screens/xtream-codes/xtream_code_data_loader_screen.dart';
 import 'package:another_iptv_player/screens/m3u/m3u_data_loader_screen.dart';
+import 'package:another_iptv_player/services/m3u_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -501,28 +502,44 @@ class NewXtreamCodePlaylistScreenState
 
       debugPrint('🎭 Demo M3U loaded, length: ${demoM3uContent.length} chars');
 
-      // Create M3U playlist in database
+      // Create M3U playlist in database (with dummy URL)
       final playlist = await controller.createPlaylist(
         name: '${_nameController.text.trim()} (Demo)',
         type: PlaylistType.m3u,
-        fileContent: demoM3uContent,
+        url: 'demo://app-store-review',
       );
 
-      if (playlist != null) {
-        debugPrint('🎭 Demo playlist created successfully, navigating to loader');
-
-        // Navigate to M3U data loader screen
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => M3uDataLoaderScreen(playlist: playlist),
-            ),
-          );
-        }
-      } else {
+      if (playlist == null) {
         debugPrint('❌ Failed to create demo playlist');
         controller.setError('Failed to load demo playlist');
+        return;
+      }
+
+      debugPrint('🎭 Demo playlist created, parsing M3U content...');
+
+      // Parse M3U content using M3uParser
+      final m3uItems = M3uParser.parseM3u(playlist.id, demoM3uContent);
+
+      if (m3uItems.isEmpty) {
+        debugPrint('❌ No channels found in demo playlist');
+        await controller.deletePlaylist(playlist.id);
+        controller.setError('Demo playlist is empty');
+        return;
+      }
+
+      debugPrint('🎭 Demo playlist parsed successfully: ${m3uItems.length} channels');
+
+      // Navigate to M3U data loader screen
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => M3uDataLoaderScreen(
+              playlist: playlist,
+              m3uItems: m3uItems,
+            ),
+          ),
+        );
       }
     } catch (e, stackTrace) {
       debugPrint('❌ Error loading demo playlist: $e');
