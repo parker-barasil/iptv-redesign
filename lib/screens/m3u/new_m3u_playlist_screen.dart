@@ -357,6 +357,9 @@ class NewM3uPlaylistScreenState extends State<NewM3uPlaylistScreen> {
         TextFormField(
           controller: _urlController,
           keyboardType: TextInputType.url,
+          maxLines: null,
+          minLines: 1,
+          maxLength: null,
           decoration: InputDecoration(
             hintText: context.loc.m3u_url_hint,
             prefixIcon: Icon(Icons.link, color: colorScheme.primary),

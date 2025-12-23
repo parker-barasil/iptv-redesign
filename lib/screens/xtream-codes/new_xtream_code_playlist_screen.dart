@@ -205,6 +205,9 @@ class NewXtreamCodePlaylistScreenState
         TextFormField(
           controller: _urlController,
           keyboardType: TextInputType.url,
+          maxLines: null,
+          minLines: 1,
+          maxLength: null,
           decoration: InputDecoration(
             hintText: context.loc.api_url_example_hint,
             prefixIcon: Icon(Icons.link_rounded, color: colorScheme.primary),
